@@ -1,0 +1,108 @@
+---
+import SocialIcon from './SocialIcon.astro';
+import { SOCIAL_LINKS, RESUME_PATH } from '../data/social';
+
+const navLinks = [
+	{ href: '#about', label: 'Sobre mí' },
+	{ href: '#work', label: 'Proyectos' },
+	{ href: '#tech', label: 'Tech' },
+	{ href: '#services', label: 'Servicios' },
+	{ href: '#experience', label: 'Experiencia' },
+	{ href: '#contact', label: 'Contacto' },
+];
+---
+<nav class="fixed top-0 w-full z-50 bg-surface/70 backdrop-blur-md border-b border-outline-variant/10 shadow-sm">
+	<div class="flex justify-between items-center px-gutter py-4 max-w-7xl mx-auto">
+		<a href="#" class="font-space text-2xl font-bold text-primary">Enzo Catalan</a>
+		<div class="hidden md:flex items-center gap-md">
+			{navLinks.map(link => (
+				<a class="text-on-surface-variant hover:text-primary transition-colors text-sm font-medium" href={link.href}>{link.label}</a>
+			))}
+			<a
+				href={RESUME_PATH}
+				download
+				class="bg-primary-container text-on-primary-container px-6 py-2 rounded-full font-bold hover:opacity-80 transition-all active:scale-95 inline-flex items-center gap-2"
+			>
+				<span class="material-symbols-outlined text-base">download</span> CV
+			</a>
+		</div>
+		<button
+			id="mobile-menu-btn"
+			type="button"
+			aria-label="Abrir menú de navegación"
+			aria-expanded="false"
+			aria-controls="mobile-menu"
+			class="md:hidden w-11 h-11 flex items-center justify-center rounded-full text-primary hover:bg-surface-container-highest transition-colors"
+		>
+			<span class="material-symbols-outlined">menu</span>
+		</button>
+	</div>
+
+	<div id="mobile-menu" class="hidden md:hidden flex-col px-gutter pb-4 border-t border-outline-variant/10">
+		{navLinks.map(link => (
+			<a class="block py-3 text-on-surface-variant hover:text-primary transition-colors text-sm font-medium border-b border-outline-variant/5" href={link.href}>{link.label}</a>
+		))}
+		<a
+			href={RESUME_PATH}
+			download
+			class="mt-4 bg-primary-container text-on-primary-container px-6 py-3 rounded-full font-bold inline-flex items-center justify-center gap-2"
+		>
+			<span class="material-symbols-outlined text-base">download</span> Descargar CV
+		</a>
+	</div>
+</nav>
+
+<aside class="fixed left-0 top-1/2 -translate-y-1/2 rounded-r-full bg-surface-container/50 backdrop-blur-lg border-r border-y border-outline-variant/20 shadow-xl flex flex-col gap-sm p-xs z-40">
+	<a
+		class="w-11 h-11 flex items-center justify-center text-on-surface-variant hover:text-primary hover:bg-surface-bright rounded-full transition-all hover:translate-x-1"
+		href={SOCIAL_LINKS.github}
+		target="_blank"
+		rel="noopener noreferrer"
+		aria-label="GitHub"
+	>
+		<SocialIcon name="github" class="w-5 h-5" />
+	</a>
+	<a
+		class="w-11 h-11 flex items-center justify-center text-on-surface-variant hover:text-primary hover:bg-surface-bright rounded-full transition-all hover:translate-x-1"
+		href={SOCIAL_LINKS.linkedin}
+		target="_blank"
+		rel="noopener noreferrer"
+		aria-label="LinkedIn"
+	>
+		<SocialIcon name="linkedin" class="w-5 h-5" />
+	</a>
+	<a
+		class="w-11 h-11 flex items-center justify-center text-on-surface-variant hover:text-primary hover:bg-surface-bright rounded-full transition-all hover:translate-x-1"
+		href={`mailto:${SOCIAL_LINKS.email}`}
+		aria-label="Enviar correo"
+	>
+		<SocialIcon name="mail" class="w-5 h-5" />
+	</a>
+</aside>
+
+<script>
+	const btn = document.getElementById('mobile-menu-btn');
+	const menu = document.getElementById('mobile-menu');
+	const icon = btn?.querySelector('.material-symbols-outlined');
+
+	const closeMenu = () => {
+		menu?.classList.add('hidden');
+		menu?.classList.remove('flex');
+		btn?.setAttribute('aria-expanded', 'false');
+		if (icon) icon.textContent = 'menu';
+	};
+
+	btn?.addEventListener('click', () => {
+		const isOpen = menu?.classList.contains('flex');
+		if (isOpen) {
+			closeMenu();
+		} else {
+			menu?.classList.remove('hidden');
+			menu?.classList.add('flex');
+			btn.setAttribute('aria-expanded', 'true');
+			if (icon) icon.textContent = 'close';
+		}
+	});
+
+	menu?.querySelectorAll('a').forEach(link => link.addEventListener('click', closeMenu));
+</script>

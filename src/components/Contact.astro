@@ -1,0 +1,57 @@
+---
+import SocialIcon from './SocialIcon.astro';
+import { SOCIAL_LINKS } from '../data/social';
+---
+<section class="py-xl px-gutter max-w-3xl mx-auto" id="contact">
+    <div class="glass p-lg md:p-xl rounded-2xl relative overflow-hidden">
+      <div class="absolute -top-24 -right-24 w-64 h-64 bg-primary/10 blur-3xl rounded-full"></div>
+      <div class="relative z-10">
+        <h2 class="font-space text-3xl text-primary mb-2 text-center font-semibold">¿Tienes un proyecto en mente?</h2>
+        <p class="text-on-surface-variant text-center mb-xl">Hablemos sobre cómo puedo ayudarte a construir algo increíble.</p>
+        <form id="contact-form" class="space-y-6">
+          <div class="grid md:grid-cols-2 gap-md">
+            <div>
+              <label for="contact-name" class="block text-sm font-medium mb-2 text-on-surface-variant">Nombre</label>
+              <input id="contact-name" name="name" required class="w-full bg-surface-container-lowest border border-outline-variant rounded-lg p-3 text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all" type="text"/>
+            </div>
+            <div>
+              <label for="contact-email" class="block text-sm font-medium mb-2 text-on-surface-variant">Email</label>
+              <input id="contact-email" name="email" required class="w-full bg-surface-container-lowest border border-outline-variant rounded-lg p-3 text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all" type="email"/>
+            </div>
+          </div>
+          <div>
+            <label for="contact-message" class="block text-sm font-medium mb-2 text-on-surface-variant">Mensaje</label>
+            <textarea id="contact-message" name="message" required class="w-full bg-surface-container-lowest border border-outline-variant rounded-lg p-3 text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all" rows="4"></textarea>
+          </div>
+          <button type="submit" class="w-full bg-primary text-background font-bold py-4 rounded-xl hover:opacity-90 transition-all shadow-[0_0_20px_rgba(0,218,243,0.2)] inline-flex items-center justify-center gap-2">
+            Enviar Mensaje <span class="material-symbols-outlined">send</span>
+          </button>
+        </form>
+        <div class="mt-xl flex justify-center gap-lg flex-wrap">
+          <a class="text-on-surface-variant hover:text-primary transition-colors flex items-center gap-2" href={SOCIAL_LINKS.github} target="_blank" rel="noopener noreferrer">
+            <SocialIcon name="github" class="w-5 h-5" /> GitHub
+          </a>
+          <a class="text-on-surface-variant hover:text-primary transition-colors flex items-center gap-2" href={SOCIAL_LINKS.linkedin} target="_blank" rel="noopener noreferrer">
+            <SocialIcon name="linkedin" class="w-5 h-5" /> LinkedIn
+          </a>
+          <a class="text-on-surface-variant hover:text-primary transition-colors flex items-center gap-2" href={`mailto:${SOCIAL_LINKS.email}`}>
+            <SocialIcon name="mail" class="w-5 h-5" /> Email
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+<script define:vars={{ contactEmail: SOCIAL_LINKS.email }}>
+  const form = document.getElementById('contact-form');
+  form?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const data = new FormData(form);
+    const name = data.get('name');
+    const email = data.get('email');
+    const message = data.get('message');
+    const subject = encodeURIComponent(`Nuevo mensaje de ${name} desde el portfolio`);
+    const body = encodeURIComponent(`Nombre: ${name}\nEmail: ${email}\n\nMensaje:\n${message}`);
+    window.location.href = `mailto:${contactEmail}?subject=${subject}&body=${body}`;
+  });
+</script>

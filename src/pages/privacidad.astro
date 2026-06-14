@@ -1,0 +1,246 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { SOCIAL_LINKS } from '../data/social';
+
+const lastUpdated = '13 de junio de 2026';
+
+const toc = [
+  { id: 'resumen', label: 'Resumen rápido' },
+  { id: 'responsable', label: 'Responsable del tratamiento' },
+  { id: 'datos-recopilados', label: 'Información que recopilamos' },
+  { id: 'uso-datos', label: 'Cómo usamos tu información' },
+  { id: 'ia', label: 'Asistente de Inteligencia Artificial' },
+  { id: 'terceros', label: 'Con quién compartimos tu información' },
+  { id: 'seguridad', label: 'Almacenamiento, seguridad y retención' },
+  { id: 'offline', label: 'Sincronización sin conexión' },
+  { id: 'menores', label: 'Privacidad de los menores' },
+  { id: 'derechos', label: 'Tus derechos' },
+  { id: 'permisos', label: 'Permisos del dispositivo' },
+  { id: 'cambios', label: 'Cambios a esta política' },
+  { id: 'contacto', label: 'Contacto' },
+];
+---
+<Layout title="Política de Privacidad | BabyMind">
+  <main class="relative z-10 px-gutter pt-28 pb-xl max-w-3xl mx-auto">
+    <a href="/" class="inline-flex items-center gap-2 text-primary hover:underline mb-8 font-medium text-sm">
+      <span class="material-symbols-outlined">arrow_back</span> Volver al portfolio
+    </a>
+
+    <span class="text-primary font-space tracking-widest text-sm block mb-2">BABYMIND</span>
+    <h1 class="font-space text-4xl md:text-5xl font-bold text-primary mb-3">Política de Privacidad</h1>
+    <p class="text-on-surface-variant text-sm mb-10">Última actualización: {lastUpdated}</p>
+
+    <nav class="glass rounded-xl p-md mb-12">
+      <h2 class="font-space text-sm font-semibold text-on-surface-variant tracking-widest mb-3">CONTENIDO</h2>
+      <ul class="grid sm:grid-cols-2 gap-1 text-sm">
+        {toc.map(item => (
+          <li><a href={`#${item.id}`} class="text-on-surface-variant hover:text-primary transition-colors">{item.label}</a></li>
+        ))}
+      </ul>
+    </nav>
+
+    <section id="resumen" class="glass rounded-xl p-md mb-12 border-l-4 border-primary">
+      <h2 class="font-space text-xl text-primary font-semibold mb-3 flex items-center gap-2">
+        <span class="material-symbols-outlined">summarize</span> Resumen rápido
+      </h2>
+      <ul class="list-disc list-inside text-on-surface-variant leading-relaxed space-y-2 pl-2 text-sm">
+        <li>BabyMind es una app para que madres, padres y tutores registren y sigan el desarrollo de sus hijos/as (hitos, sueño, actividades, ficha médica y cuentos).</li>
+        <li>Tú decides qué información ingresas. No recopilamos datos directamente de los niños/as: todo lo registra el adulto responsable de la cuenta.</li>
+        <li>Usamos modelos de Inteligencia Artificial de Google (Gemini / Google AI, en su capa gratuita) para el asistente y la generación de cuentos. No usamos modelos de Anthropic/Claude.</li>
+        <li>No vendemos tus datos ni los usamos con fines publicitarios.</li>
+        <li>Tus datos se almacenan en una base de datos PostgreSQL en infraestructura controlada por el desarrollador, con contraseñas cifradas y sesiones protegidas mediante tokens con rotación.</li>
+        <li>Puedes solicitar la exportación o eliminación de tu cuenta y todos sus datos en cualquier momento.</li>
+      </ul>
+    </section>
+
+    <section id="responsable" class="mb-10">
+      <h2 class="font-space text-2xl text-primary font-semibold mb-4">1. Responsable del tratamiento</h2>
+      <p class="text-on-surface-variant leading-relaxed mb-4">
+        BabyMind ("la aplicación", "nosotros") es desarrollada y operada por <strong class="text-on-surface font-semibold">Enzo Catalán</strong>, desarrollador independiente.
+        Para cualquier consulta relacionada con esta Política de Privacidad o el tratamiento de tus datos personales, puedes contactarnos a través del correo
+        indicado en la sección <a href="#contacto" class="text-primary hover:underline">Contacto</a>.
+      </p>
+      <p class="text-on-surface-variant leading-relaxed">
+        Esta política aplica a la aplicación móvil BabyMind (Android) y a cualquier servicio backend asociado necesario para su funcionamiento.
+      </p>
+    </section>
+
+    <section id="datos-recopilados" class="mb-10">
+      <h2 class="font-space text-2xl text-primary font-semibold mb-4">2. Información que recopilamos</h2>
+      <p class="text-on-surface-variant leading-relaxed mb-6">
+        Para funcionar, BabyMind necesita almacenar la información que tú mismo ingresas en la app. A continuación detallamos cada categoría de datos:
+      </p>
+
+      <h3 class="font-space text-lg text-secondary font-semibold mb-2">2.1 Datos de la cuenta</h3>
+      <ul class="list-disc list-inside text-on-surface-variant leading-relaxed mb-6 space-y-1 pl-2">
+        <li>Nombre, correo electrónico y contraseña (almacenada únicamente como hash, nunca en texto plano).</li>
+        <li>Tokens de sesión y de actualización (refresh tokens) para mantener tu sesión iniciada de forma segura.</li>
+      </ul>
+
+      <h3 class="font-space text-lg text-secondary font-semibold mb-2">2.2 Perfil del niño/a</h3>
+      <ul class="list-disc list-inside text-on-surface-variant leading-relaxed mb-6 space-y-1 pl-2">
+        <li>Nombre, fecha de nacimiento y sexo del niño/a registrado por el tutor.</li>
+        <li>Esta información se usa para personalizar el contenido de la app (hitos esperados según la edad, actividades recomendadas, cuentos, etc.).</li>
+      </ul>
+
+      <h3 class="font-space text-lg text-secondary font-semibold mb-2">2.3 Ficha médica <span class="text-xs font-normal text-on-surface-variant">(dato sensible)</span></h3>
+      <ul class="list-disc list-inside text-on-surface-variant leading-relaxed mb-6 space-y-1 pl-2">
+        <li>Tipo de sangre, alergias conocidas y datos de contacto del pediatra.</li>
+        <li>Este apartado es completamente opcional y queda bajo tu control: puedes crearlo, editarlo o dejarlo vacío.</li>
+      </ul>
+
+      <h3 class="font-space text-lg text-secondary font-semibold mb-2">2.4 Hitos, sueño y actividades</h3>
+      <ul class="list-disc list-inside text-on-surface-variant leading-relaxed mb-6 space-y-1 pl-2">
+        <li>Registros de hitos del desarrollo (motor, lenguaje, social, cognitivo) con fecha y categoría.</li>
+        <li>Registros manuales de sueño (horarios, duración) y configuración de recordatorios.</li>
+        <li>Historial de actividades realizadas a partir del catálogo por edad de la app.</li>
+      </ul>
+
+      <h3 class="font-space text-lg text-secondary font-semibold mb-2">2.5 Cuentos y conversaciones con el Asistente de IA</h3>
+      <ul class="list-disc list-inside text-on-surface-variant leading-relaxed mb-6 space-y-1 pl-2">
+        <li>Cuentos generados a través de la app, guardados en tu biblioteca personal y marcados como favoritos.</li>
+        <li>Historial de conversaciones con el asistente virtual (preguntas y respuestas).</li>
+      </ul>
+
+      <h3 class="font-space text-lg text-secondary font-semibold mb-2">2.6 Datos técnicos y de uso</h3>
+      <ul class="list-disc list-inside text-on-surface-variant leading-relaxed space-y-1 pl-2">
+        <li>Información básica del dispositivo y versión de la app, para soporte y depuración de errores.</li>
+        <li>Dirección IP y registros (logs) de actividad, usados únicamente con fines de seguridad (por ejemplo, detección de uso indebido de tokens de sesión).</li>
+        <li>Marca de tiempo (<code class="text-xs bg-surface-container px-1 py-0.5 rounded">updated_at</code>) de cada registro, utilizada para la sincronización de datos creados sin conexión.</li>
+      </ul>
+    </section>
+
+    <section id="uso-datos" class="mb-10">
+      <h2 class="font-space text-2xl text-primary font-semibold mb-4">3. Cómo usamos tu información</h2>
+      <p class="text-on-surface-variant leading-relaxed mb-4">Usamos la información descrita exclusivamente para:</p>
+      <ul class="list-disc list-inside text-on-surface-variant leading-relaxed space-y-2 pl-2">
+        <li>Proveer las funciones principales de la app: perfiles, ficha médica, hitos, sueño, actividades y cuentos.</li>
+        <li>Generar respuestas personalizadas del asistente y cuentos adaptados a la edad e información del niño/a.</li>
+        <li>Mantener tu sesión activa de forma segura y proteger tu cuenta frente a accesos no autorizados.</li>
+        <li>Sincronizar los datos creados sin conexión cuando el dispositivo recupera internet.</li>
+        <li>Enviar notificaciones que tú mismo configures (por ejemplo, recordatorios de sueño).</li>
+        <li>Diagnosticar errores y mejorar la estabilidad y el rendimiento de la app.</li>
+      </ul>
+      <p class="text-on-surface-variant leading-relaxed mt-4">
+        No utilizamos tu información para publicidad, no la vendemos ni la cedemos a terceros con fines comerciales.
+      </p>
+    </section>
+
+    <section id="ia" class="mb-10">
+      <h2 class="font-space text-2xl text-primary font-semibold mb-4">4. Asistente de Inteligencia Artificial</h2>
+      <p class="text-on-surface-variant leading-relaxed mb-4">
+        Las funciones de <strong class="text-on-surface font-semibold">Asistente IA</strong> y <strong class="text-on-surface font-semibold">Generación de Cuentos</strong> utilizan
+        modelos de Inteligencia Artificial de <strong class="text-on-surface font-semibold">Google (familia Gemini / Google AI, capa gratuita)</strong>.
+      </p>
+      <ul class="list-disc list-inside text-on-surface-variant leading-relaxed mb-4 space-y-2 pl-2">
+        <li>Cuando usas el asistente o pides un cuento, el texto de tu solicitud (y el contexto mínimo necesario, como la edad o intereses del niño/a) se envía a la API de Google para generar una respuesta.</li>
+        <li>Estas funciones requieren conexión a internet; no se ejecutan de forma local en el dispositivo.</li>
+        <li>El procesamiento de estas solicitudes está sujeto adicionalmente a la <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer" class="text-primary hover:underline">Política de Privacidad de Google</a>.</li>
+        <li>No enviamos tu ficha médica completa ni datos de identificación de la cuenta (contraseña, tokens) a estos modelos. Solo se envía el contenido estrictamente necesario para generar la respuesta o el cuento solicitado.</li>
+      </ul>
+      <p class="text-on-surface-variant leading-relaxed">
+        Procura no incluir información sensible adicional (como información médica detallada) directamente en tus mensajes al asistente, salvo que sea necesario para la consulta.
+      </p>
+    </section>
+
+    <section id="terceros" class="mb-10">
+      <h2 class="font-space text-2xl text-primary font-semibold mb-4">5. Con quién compartimos tu información</h2>
+      <p class="text-on-surface-variant leading-relaxed mb-4">
+        BabyMind no comparte tu información personal con terceros para fines comerciales o publicitarios. Solo se comparten datos con los siguientes proveedores,
+        estrictamente para el funcionamiento técnico de la app:
+      </p>
+      <ul class="list-disc list-inside text-on-surface-variant leading-relaxed space-y-2 pl-2">
+        <li><strong class="text-on-surface font-semibold">Google (Gemini / Google AI):</strong> procesamiento de solicitudes del asistente y generación de cuentos, según se describe en la sección anterior.</li>
+        <li><strong class="text-on-surface font-semibold">Infraestructura propia (VPS):</strong> el backend y la base de datos PostgreSQL se alojan en un servidor privado virtual administrado por el desarrollador.</li>
+      </ul>
+      <p class="text-on-surface-variant leading-relaxed mt-4">
+        Podríamos divulgar información si así lo exige la ley, una orden judicial o un proceso legal, o para proteger los derechos, la seguridad o la propiedad de los usuarios y de BabyMind.
+      </p>
+    </section>
+
+    <section id="seguridad" class="mb-10">
+      <h2 class="font-space text-2xl text-primary font-semibold mb-4">6. Almacenamiento, seguridad y retención</h2>
+      <ul class="list-disc list-inside text-on-surface-variant leading-relaxed space-y-2 pl-2">
+        <li>Tus contraseñas se almacenan utilizando un algoritmo de hash seguro (bcrypt); nunca se guardan en texto plano ni son visibles para nosotros.</li>
+        <li>La autenticación utiliza tokens JWT de corta duración junto con refresh tokens rotativos; si se detecta el uso de un refresh token robado, se revocan todas las sesiones activas de la cuenta como medida de protección.</li>
+        <li>Los datos se transmiten cifrados mediante HTTPS/TLS.</li>
+        <li>Aplicamos "borrado lógico" (soft delete): al eliminar un registro, este deja de mostrarse y de usarse, y se elimina de forma permanente conforme a nuestros procesos internos de depuración.</li>
+        <li>Conservamos tu información mientras tu cuenta permanezca activa. Si solicitas la eliminación de tu cuenta, eliminaremos o anonimizaremos tus datos personales en un plazo razonable, salvo que la ley exija conservarlos por más tiempo.</li>
+      </ul>
+    </section>
+
+    <section id="offline" class="mb-10">
+      <h2 class="font-space text-2xl text-primary font-semibold mb-4">7. Sincronización sin conexión</h2>
+      <p class="text-on-surface-variant leading-relaxed">
+        BabyMind te permite seguir registrando información (hitos, sueño, actividades) sin conexión a internet. Estos cambios se guardan temporalmente en tu dispositivo
+        y se sincronizan automáticamente con tu cuenta cuando recuperas la conexión, utilizando la marca de tiempo de cada registro para resolver conflictos
+        (se conserva la versión más reciente). Mientras un dato no se haya sincronizado, permanece almacenado únicamente en tu dispositivo.
+      </p>
+    </section>
+
+    <section id="menores" class="mb-10">
+      <h2 class="font-space text-2xl text-primary font-semibold mb-4">8. Privacidad de los menores</h2>
+      <p class="text-on-surface-variant leading-relaxed mb-4">
+        BabyMind está diseñada para ser utilizada por <strong class="text-on-surface font-semibold">madres, padres o tutores legales adultos</strong>, quienes crean
+        la cuenta y registran voluntariamente la información relativa a sus hijos/as. La aplicación no está dirigida a niños ni permite que un menor cree o gestione
+        una cuenta de forma independiente.
+      </p>
+      <p class="text-on-surface-variant leading-relaxed">
+        La información del niño/a (perfil, ficha médica, hitos, sueño y actividades) es ingresada, controlada y puede ser eliminada en cualquier momento por el
+        adulto responsable de la cuenta. Si tienes inquietudes sobre los datos de un menor registrados en la app, contáctanos a través de los medios indicados en
+        la sección <a href="#contacto" class="text-primary hover:underline">Contacto</a>.
+      </p>
+    </section>
+
+    <section id="derechos" class="mb-10">
+      <h2 class="font-space text-2xl text-primary font-semibold mb-4">9. Tus derechos</h2>
+      <p class="text-on-surface-variant leading-relaxed mb-4">Como usuario de BabyMind, en cualquier momento puedes solicitar:</p>
+      <ul class="list-disc list-inside text-on-surface-variant leading-relaxed space-y-2 pl-2">
+        <li><strong class="text-on-surface font-semibold">Acceso:</strong> obtener una copia de los datos personales que tenemos almacenados sobre ti y tu(s) hijo/a(s).</li>
+        <li><strong class="text-on-surface font-semibold">Rectificación:</strong> corregir datos inexactos o incompletos directamente desde la app o solicitándolo por correo.</li>
+        <li><strong class="text-on-surface font-semibold">Eliminación:</strong> solicitar la eliminación de tu cuenta y de todos los datos asociados.</li>
+        <li><strong class="text-on-surface font-semibold">Portabilidad:</strong> solicitar tus datos en un formato estructurado y de uso común.</li>
+        <li><strong class="text-on-surface font-semibold">Oposición/limitación:</strong> oponerte a un tratamiento específico de tus datos, cuando sea aplicable.</li>
+      </ul>
+      <p class="text-on-surface-variant leading-relaxed mt-4">
+        Para ejercer cualquiera de estos derechos, escríbenos a través del correo indicado en la sección <a href="#contacto" class="text-primary hover:underline">Contacto</a>.
+        Responderemos en un plazo razonable.
+      </p>
+    </section>
+
+    <section id="permisos" class="mb-10">
+      <h2 class="font-space text-2xl text-primary font-semibold mb-4">10. Permisos del dispositivo</h2>
+      <p class="text-on-surface-variant leading-relaxed mb-4">BabyMind puede solicitar los siguientes permisos en tu dispositivo Android:</p>
+      <ul class="list-disc list-inside text-on-surface-variant leading-relaxed space-y-2 pl-2">
+        <li><strong class="text-on-surface font-semibold">Notificaciones:</strong> para enviarte los recordatorios que tú configures (por ejemplo, de sueño).</li>
+        <li><strong class="text-on-surface font-semibold">Conexión a internet:</strong> necesaria para sincronizar datos y usar el asistente de IA y la generación de cuentos.</li>
+        <li><strong class="text-on-surface font-semibold">Almacenamiento local:</strong> para guardar de forma temporal los datos creados sin conexión hasta que se sincronicen.</li>
+      </ul>
+      <p class="text-on-surface-variant leading-relaxed mt-4">
+        BabyMind no solicita permisos de cámara, contactos, ubicación ni acceso a otras apps más allá de lo descrito anteriormente.
+      </p>
+    </section>
+
+    <section id="cambios" class="mb-10">
+      <h2 class="font-space text-2xl text-primary font-semibold mb-4">11. Cambios a esta política</h2>
+      <p class="text-on-surface-variant leading-relaxed">
+        Podemos actualizar esta Política de Privacidad ocasionalmente, por ejemplo para reflejar nuevas funciones de la app o cambios legales. Cualquier cambio
+        relevante será comunicado dentro de la app y la fecha de "Última actualización" al inicio de este documento será modificada en consecuencia. Te recomendamos
+        revisar esta página periódicamente.
+      </p>
+    </section>
+
+    <section id="contacto" class="mb-4">
+      <h2 class="font-space text-2xl text-primary font-semibold mb-4">12. Contacto</h2>
+      <p class="text-on-surface-variant leading-relaxed mb-4">
+        Si tienes preguntas, comentarios o quieres ejercer alguno de tus derechos sobre tus datos personales o los de tu hijo/a, puedes escribirnos a:
+      </p>
+      <a
+        href={`mailto:${SOCIAL_LINKS.email}?subject=${encodeURIComponent('BabyMind - Consulta sobre privacidad')}`}
+        class="glass inline-flex items-center gap-2 px-6 py-3 rounded-full text-primary font-bold hover:opacity-90 transition-all"
+      >
+        <span class="material-symbols-outlined">mail</span> {SOCIAL_LINKS.email}
+      </a>
+    </section>
+  </main>
+</Layout>

@@ -1,23 +1,136 @@
+---
+import ShaderBg from '../components/ShaderBg.astro';
+
+interface Props {
+	title: string;
+}
+
+const { title } = Astro.props;
+---
+
 <!doctype html>
-<html lang="en">
+<html lang="es" class="dark scroll-smooth">
 	<head>
 		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width" />
+		<meta name="description" content="Portfolio Full Stack" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta name="theme-color" content="#051424" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro Basics</title>
+		<title>{title}</title>
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Space+Grotesk:wght@600;700&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
 	</head>
-	<body>
+	<body class="bg-background text-on-surface font-inter overflow-x-hidden antialiased">
+		<ShaderBg />
 		<slot />
 	</body>
 </html>
 
-<style>
-	html,
-	body {
-		margin: 0;
-		width: 100%;
-		height: 100%;
+<style is:global>
+	/* Importar Tailwind v4 de manera nativa */
+	@import "tailwindcss";
+  
+	/* Configuración del tema nativo para v4 (Reemplaza a tailwind.config.mjs) */
+	@theme {
+	  --color-background: #051424;
+	  --color-surface: #051424;
+	  --color-surface-bright: #2c3a4c;
+	  --color-surface-container-lowest: #010f1f;
+	  --color-surface-container-low: #0d1c2d;
+	  --color-surface-container: #122131;
+	  --color-surface-container-high: #1c2b3c;
+	  --color-surface-container-highest: #273647;
+	  
+	  --color-on-surface: #d4e4fa;
+	  --color-on-surface-variant: #bac9cc;
+	  --color-inverse-surface: #d4e4fa;
+	  --color-inverse-on-surface: #233143;
+	  --color-outline: #849396;
+	  --color-outline-variant: #3b494c;
+	  
+	  --color-primary: #c3f5ff;
+	  --color-on-primary: #00363d;
+	  --color-primary-container: #00e5ff;
+	  --color-on-primary-container: #00626e;
+	  --color-inverse-primary: #006875;
+	  
+	  --color-secondary: #c0c1ff;
+	  --color-on-secondary: #1000a9;
+	  --color-secondary-container: #3131c0;
+	  --color-on-secondary-container: #b0b2ff;
+	  
+	  --color-tertiary: #e8ecff;
+	  --color-on-tertiary: #283044;
+	  --color-tertiary-container: #c8d0ea;
+	  --color-on-tertiary-container: #51596f;
+  
+	  --color-primary-fixed: #9cf0ff;
+	  --color-primary-fixed-dim: #00daf3;
+	  --color-on-primary-fixed: #001f24;
+	  --color-on-primary-fixed-variant: #004f58;
+  
+	  /* Espaciados personalizados del sistema de diseño */
+	  --spacing-xs: 0.5rem;
+	  --spacing-sm: 1rem;
+	  --spacing-md: 1.5rem;
+	  --spacing-lg: 2.5rem;
+	  --spacing-xl: 4rem;
+	  --spacing-gutter: 1.5rem;
+	  --spacing-margin: 2rem;
+  
+	  /* Tipografías */
+	  --font-space: "Space Grotesk", sans-serif;
+	  --font-inter: "Inter", sans-serif;
 	}
-</style>
+  
+	/* Clases utilitarias personalizadas y animaciones */
+	@utility glass {
+	  background: rgba(15, 23, 42, 0.7);
+	  backdrop-filter: blur(12px);
+	  border: 1px solid rgba(30, 41, 59, 0.5);
+	}
+  
+	@utility glass-hover {
+	  &:hover {
+		border-color: #00e5ff;
+		background: rgba(15, 23, 42, 0.85);
+	  }
+	}
+  
+	@utility tech-badge {
+	  background: rgba(0, 229, 255, 0.1);
+	  border: 1px solid rgba(0, 229, 255, 0.2);
+	}
+  
+	@utility animate-reveal {
+	  animation: fadeIn 0.8s ease-out forwards;
+	}
+  
+	@utility animate-float {
+	  animation: float 6s ease-in-out infinite;
+	}
+  
+	@keyframes fadeIn { 
+	  from { opacity: 0; transform: translateY(20px); } 
+	  to { opacity: 1; transform: translateY(0); } 
+	}
+	
+	@keyframes float { 
+	  0%, 100% { transform: translateY(0px); } 
+	  50% { transform: translateY(-20px); } 
+	}
+  
+	/* Clases de compatibilidad para fuentes de tu HTML antiguo */
+	.font-headline-md, .font-display-lg, .font-code { font-family: var(--font-space); }
+	.font-body-md, .font-body-lg, .font-label-md { font-family: var(--font-inter); }
+  
+	/* Asegurar visibilidad inicial de los elementos controlados por JS */
+	.opacity-0.animate-reveal { opacity: 1; }
+  
+	html { scroll-behavior: smooth; }
+	::-webkit-scrollbar { width: 8px; }
+	::-webkit-scrollbar-track { background: #051424; }
+	::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 4px; }
+	::-webkit-scrollbar-thumb:hover { background: #00e5ff; }
+  </style>

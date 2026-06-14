@@ -1,0 +1,39 @@
+---
+const services = [
+  {
+    icon: "language",
+    color: "primary",
+    title: "Web Development",
+    desc: "Sitios web de alto rendimiento construidos con tecnologías modernas como React y Next.js para una experiencia de usuario fluida.",
+  },
+  {
+    icon: "smartphone",
+    color: "secondary",
+    title: "Mobile Apps",
+    desc: "Aplicaciones móviles nativas y cross-platform que ofrecen una experiencia consistente y potente en iOS y Android.",
+  },
+  {
+    icon: "api",
+    color: "primary",
+    title: "Backend & APIs",
+    desc: "Arquitecturas de servidor robustas y APIs escalables que sirven como el motor sólido de tus aplicaciones.",
+  },
+];
+---
+<section class="py-xl px-gutter max-w-7xl mx-auto" id="services">
+    <div class="text-center mb-xl">
+      <h2 class="font-space text-3xl text-primary mb-2 font-semibold">Servicios Especializados</h2>
+      <p class="text-on-surface-variant">Soluciones integrales para desafíos tecnológicos modernos</p>
+    </div>
+    <div class="grid md:grid-cols-3 gap-md">
+      {services.map((service) => (
+        <div class={`glass p-lg rounded-xl border-b-4 ${service.color === 'primary' ? 'border-primary' : 'border-secondary'} hover:bg-surface-container-highest transition-colors`}>
+          <div class={`w-14 h-14 flex items-center justify-center rounded-2xl mb-4 ${service.color === 'primary' ? 'bg-primary/10 text-primary' : 'bg-secondary-container/20 text-secondary'}`}>
+            <span class="material-symbols-outlined text-3xl">{service.icon}</span>
+          </div>
+          <h3 class="font-space text-xl mb-4 font-semibold">{service.title}</h3>
+          <p class="text-on-surface-variant text-sm leading-relaxed">{service.desc}</p>
+        </div>
+      ))}
+    </div>
+  </section>

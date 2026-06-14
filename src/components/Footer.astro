@@ -1,0 +1,13 @@
+---
+import { SOCIAL_LINKS } from '../data/social';
+---
+<footer class="bg-surface-container-lowest border-t border-outline-variant/5 w-full py-xl px-margin">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-md">
+      <a href="#" class="font-space text-primary font-bold text-xl">EC</a>
+      <p class="text-sm text-on-surface-variant">© 2026 Enzo Catalan. Built with Precision.</p>
+      <div class="flex gap-md">
+        <a class="text-on-surface-variant hover:text-secondary transition-colors text-sm" href="/privacidad">Política de Privacidad</a>
+        <a class="text-on-surface-variant hover:text-secondary transition-colors text-sm" href={SOCIAL_LINKS.github} target="_blank" rel="noopener noreferrer">Código Fuente</a>
+      </div>
+    </div>
+  </footer>

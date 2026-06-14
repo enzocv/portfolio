@@ -1,0 +1,51 @@
+---
+const categories = [
+  {
+    title: "Frontend",
+    icon: "devices",
+    color: "primary",
+    items: ["React", "Next.js", "Angular", "React Native", "TypeScript", "Tailwind CSS"],
+  },
+  {
+    title: "Backend",
+    icon: "dns",
+    color: "secondary",
+    items: ["NestJS", "Node.js", "REST API", "GraphQL", "Python"],
+  },
+  {
+    title: "Databases",
+    icon: "storage",
+    color: "primary",
+    items: ["PostgreSQL", "MongoDB", "Redis", "Firebase"],
+  },
+  {
+    title: "DevOps",
+    icon: "terminal",
+    color: "secondary",
+    items: ["Docker", "Git", "CI/CD", "AWS", "Kubernetes"],
+  },
+];
+---
+<section class="py-xl bg-surface-container-lowest/50" id="tech">
+    <div class="px-gutter max-w-7xl mx-auto">
+      <div class="text-center mb-xl">
+        <h2 class="font-space text-3xl text-primary mb-2 font-semibold">Stack Tecnológico</h2>
+        <p class="text-on-surface-variant">Herramientas y tecnologías que domino para dar vida a tus ideas</p>
+      </div>
+      <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-md">
+        {categories.map((category) => (
+          <div class={`glass p-md rounded-xl border-t-2 ${category.color === 'primary' ? 'border-primary' : 'border-secondary'}`}>
+            <h3 class={`font-space text-xl mb-4 flex items-center gap-3 ${category.color === 'primary' ? 'text-primary' : 'text-secondary'}`}>
+              <span class={`material-symbols-outlined w-9 h-9 flex items-center justify-center rounded-lg ${category.color === 'primary' ? 'bg-primary/10' : 'bg-secondary-container/20'}`}>{category.icon}</span>
+              {category.title}
+            </h3>
+            <div class="flex flex-wrap gap-2">
+              {category.items.map(t => (
+                <span class={`tech-badge px-3 py-1 rounded text-sm font-medium ${category.color === 'primary' ? 'text-primary' : 'border-secondary/20 text-secondary'}`}>{t}</span>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
