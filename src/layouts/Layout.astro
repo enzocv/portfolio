@@ -19,7 +19,7 @@ const { title } = Astro.props;
 		<title>{title}</title>
 		<link rel="preconnect" href="https://fonts.googleapis.com">
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Space+Grotesk:wght@600;700&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Space+Grotesk:wght@400;600;700&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
 	</head>
 	<body class="bg-background text-on-surface font-inter overflow-x-hidden antialiased">
 		<ShaderBg />
@@ -128,9 +128,21 @@ const { title } = Astro.props;
 	/* Asegurar visibilidad inicial de los elementos controlados por JS */
 	.opacity-0.animate-reveal { opacity: 1; }
   
-	html { scroll-behavior: smooth; }
+	html {
+	  scroll-behavior: smooth;
+	  scroll-padding-top: 5rem; /* compensa la altura del navbar fijo al navegar por anclas */
+	}
 	::-webkit-scrollbar { width: 8px; }
 	::-webkit-scrollbar-track { background: #051424; }
 	::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 4px; }
 	::-webkit-scrollbar-thumb:hover { background: #00e5ff; }
+
+	@media (prefers-reduced-motion: reduce) {
+	  *, *::before, *::after {
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.01ms !important;
+		scroll-behavior: auto !important;
+	  }
+	}
   </style>

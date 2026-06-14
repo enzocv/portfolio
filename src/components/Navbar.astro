@@ -4,10 +4,10 @@ import { SOCIAL_LINKS, RESUME_PATH } from '../data/social';
 
 const navLinks = [
 	{ href: '#about', label: 'Sobre mí' },
-	{ href: '#work', label: 'Proyectos' },
 	{ href: '#tech', label: 'Tech' },
-	{ href: '#services', label: 'Servicios' },
+	{ href: '#work', label: 'Proyectos' },
 	{ href: '#experience', label: 'Experiencia' },
+	{ href: '#services', label: 'Servicios' },
 	{ href: '#contact', label: 'Contacto' },
 ];
 ---
@@ -52,7 +52,7 @@ const navLinks = [
 	</div>
 </nav>
 
-<aside class="fixed left-0 top-1/2 -translate-y-1/2 rounded-r-full bg-surface-container/50 backdrop-blur-lg border-r border-y border-outline-variant/20 shadow-xl flex flex-col gap-sm p-xs z-40">
+<aside class="fixed left-0 top-1/2 -translate-y-1/2 rounded-r-full bg-surface-container/50 backdrop-blur-lg border-r border-y border-outline-variant/20 shadow-xl hidden lg:flex flex-col gap-sm p-xs z-40">
 	<a
 		class="w-11 h-11 flex items-center justify-center text-on-surface-variant hover:text-primary hover:bg-surface-bright rounded-full transition-all hover:translate-x-1"
 		href={SOCIAL_LINKS.github}
