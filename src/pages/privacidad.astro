@@ -1,6 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import { SOCIAL_LINKS } from '../data/social';
+import { withBase } from '../utils/paths';
 
 const lastUpdated = '13 de junio de 2026';
 
@@ -22,7 +23,7 @@ const toc = [
 ---
 <Layout title="Política de Privacidad | BabyMind">
   <main class="relative z-10 px-gutter pt-28 pb-xl max-w-3xl mx-auto">
-    <a href="/" class="inline-flex items-center gap-2 text-primary hover:underline mb-8 font-medium text-sm">
+    <a href={withBase('/')} class="inline-flex items-center gap-2 text-primary hover:underline mb-8 font-medium text-sm">
       <span class="material-symbols-outlined">arrow_back</span> Volver al portfolio
     </a>
 
