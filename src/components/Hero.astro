@@ -27,7 +27,8 @@
       <div class="relative hidden md:flex justify-center animate-reveal" style="animation-delay: 0.4s;">
         <div class="animate-float relative">
           <div class="absolute -inset-4 bg-primary/20 blur-3xl rounded-full"></div>
-          <img alt="Enzo Catalán" class="w-80 h-auto object-contain relative z-10" src="/Perfil.png"/>
+          <div class="absolute top-8 -right-10 w-48 h-48 bg-pink-500/30 blur-3xl rounded-full"></div>
+          <img alt="Enzo Catalán" class="w-80 h-auto object-contain relative z-10 fade-bottom" src="/Perfil.png"/>
           <div class="absolute -top-4 -right-4 glass px-4 py-2 rounded-lg font-space text-primary animate-float" style="animation-delay: -1s;">&lt;React /&gt;</div>
           <div class="absolute bottom-8 -left-8 glass px-4 py-2 rounded-lg font-space text-secondary animate-float" style="animation-delay: -2s;">Node.js</div>
           <div class="absolute top-1/2 -right-8 glass px-4 py-2 rounded-lg font-space text-primary animate-float" style="animation-delay: -2s;">AWS</div>
@@ -35,3 +36,10 @@
       </div>
     </div>
   </section>
+
+<style>
+  .fade-bottom {
+    -webkit-mask-image: linear-gradient(to bottom, black 0%, black 80%, transparent 100%);
+    mask-image: linear-gradient(to bottom, black 0%, black 80%, transparent 100%);
+  }
+</style>
