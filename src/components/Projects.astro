@@ -1,22 +1,43 @@
 ---
 import { SOCIAL_LINKS } from '../data/social';
 
-const projects = [
-  {
-    title: "Gym Hub Pro", tag: "SaaS",
-    desc: "Plataforma integral para gestión de gimnasios con pagos automatizados, tracking de rutinas y dashboard administrativo.",
-    techs: ["#NextJS", "#PostgreSQL", "#Stripe"],
-    img: "https://lh3.googleusercontent.com/aida-public/AB6AXuCwzwfExycuQBiJ1dXCN5iYGO4cEIQDAb-kPJ-sGxOq7zCxfLXMdrIGMq0Vluq3IvXr7QkULAlg1TYKNnc42fTjqWGtp6nZEiVvwhUPtj-VPEhpZx1UT_fXZZ0zGNjM-VcG7IVC40byhg9iL84hNJ45rbTN0CXjelGp862tgvjT2rErBZojETIiQz87gIyLmM6Rc_lZmBh25R0VFPF-q6NN2L3z6Q4eoGb7yvuNXJmhCW8kztkNVU99pWZsS99IC6OhBxVk5qFqAcfI",
-    offset: false
-  },
-  {
-    title: "FinTrack Mobile", tag: "Mobile",
-    desc: "Aplicación móvil de finanzas personales con inteligencia artificial para categorización de gastos y metas de ahorro.",
-    techs: ["#ReactNative", "#Firebase", "#AI"],
-    img: "https://lh3.googleusercontent.com/aida-public/AB6AXuB74XVDA9U8ajR8vbwhmLnLOSqOym1dO41z46tMZYWIsBJXjnAGPXAzmiSo-VmfqNNpk5IL2kFudXeZu4YJ0ogExBPH4eNqTeaHvqGQhPs81UmR4JBPU_0UKl9AwtI968Ji6Ri_-No7aeLdbL2uPgs508gr6atQD4vazq1mdfIM3vVAAsRHPsoi8E_Fwec4_ErqDcAWZVAxuIp_VIsRNCj5qbLk07HlVPmzDbYP2olZx90SCBAHx-mkMt1yyhPmfm9YwRB0o8VFhi1W",
-    offset: true
-  }
+// Repos a destacar: agrega, quita o reordena entradas para cambiar qué se muestra.
+const FEATURED_REPOS = [
+  { repo: 'enzocv/fintrack', tag: 'Mobile', offset: false },
+  { repo: 'enzocv/hotelv2', tag: 'Web', offset: true },
+  { repo: 'enzocv/babymind', tag: 'Mobile', offset: false },
 ];
+
+const token = import.meta.env.GH_REPOS_TOKEN;
+
+const projects = await Promise.all(
+  FEATURED_REPOS.map(async ({ repo, tag, offset }) => {
+    const res = await fetch(`https://api.github.com/repos/${repo}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        Accept: 'application/vnd.github+json',
+      },
+    });
+
+    if (!res.ok) {
+      throw new Error(`GitHub API error for ${repo}: ${res.status}`);
+    }
+
+    const data = await res.json();
+    const topics: string[] = data.topics?.length ? data.topics : [data.language].filter(Boolean);
+
+    return {
+      title: data.name as string,
+      tag,
+      desc: (data.description as string) ?? '',
+      techs: topics.map((t) => `#${t}`),
+      img: `https://opengraph.githubassets.com/1/${repo}`,
+      demoUrl: data.homepage as string | null,
+      codeUrl: data.private ? null : (data.html_url as string),
+      offset,
+    };
+  })
+);
 ---
 <section class="py-xl px-gutter max-w-7xl mx-auto" id="work">
   <h2 class="font-space text-3xl text-primary mb-xl text-center font-semibold">Proyectos Destacados</h2>
@@ -25,10 +46,16 @@ const projects = [
       <div class={`glass group overflow-hidden rounded-xl ${project.offset ? 'md:mt-24' : ''}`}>
         <div class="h-64 overflow-hidden relative">
           <img src={project.img} alt={project.title} class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
-          <div class="absolute inset-0 bg-surface/40 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity flex items-center justify-center gap-md">
-            <button type="button" aria-label="Ver demo" class="w-12 h-12 flex items-center justify-center bg-primary-container text-on-primary-container rounded-full hover:scale-110 transition-transform"><span class="material-symbols-outlined">visibility</span></button>
-            <button type="button" aria-label="Ver código" class="w-12 h-12 flex items-center justify-center bg-surface rounded-full hover:scale-110 transition-transform border border-outline"><span class="material-symbols-outlined">code</span></button>
-          </div>
+          {(project.demoUrl || project.codeUrl) && (
+            <div class="absolute inset-0 bg-surface/40 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity flex items-center justify-center gap-md">
+              {project.demoUrl && (
+                <a href={project.demoUrl} target="_blank" rel="noopener noreferrer" aria-label="Ver demo" class="w-12 h-12 flex items-center justify-center bg-primary-container text-on-primary-container rounded-full hover:scale-110 transition-transform"><span class="material-symbols-outlined">visibility</span></a>
+              )}
+              {project.codeUrl && (
+                <a href={project.codeUrl} target="_blank" rel="noopener noreferrer" aria-label="Ver código" class="w-12 h-12 flex items-center justify-center bg-surface rounded-full hover:scale-110 transition-transform border border-outline"><span class="material-symbols-outlined">code</span></a>
+              )}
+            </div>
+          )}
         </div>
         <div class="p-md">
           <div class="flex justify-between items-start mb-4">

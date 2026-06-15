@@ -25,6 +25,8 @@ jobs:
         uses: withastro/action@v3
         with:
           node-version: 22
+        env:
+          GH_REPOS_TOKEN: ${{ secrets.GH_REPOS_TOKEN }}
 
   deploy:
     needs: build

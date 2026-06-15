@@ -4,8 +4,8 @@
 import { withBase } from '../utils/paths';
 
 export const SOCIAL_LINKS = {
-  github: '#',
-  linkedin: '#',
+  github: 'https://github.com/enzocv',
+  linkedin: 'https://www.linkedin.com/in/enzocatalan/',
   email: 'enzocv96@gmail.com',
 };
 

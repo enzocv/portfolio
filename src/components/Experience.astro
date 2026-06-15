@@ -1,37 +1,39 @@
 ---
+import experience from '../data/experience.json';
 ---
 <section class="py-xl bg-surface-container-low/30 px-gutter" id="experience">
     <div class="max-w-4xl mx-auto">
       <h2 class="font-space text-3xl text-primary mb-xl text-center font-semibold">Experiencia Profesional</h2>
       <div class="space-y-12 relative before:absolute before:left-0 md:before:left-1/2 before:h-full before:w-[2px] before:bg-outline-variant/30">
-        <div class="relative pl-8 md:pl-0 md:flex md:justify-between items-center group">
-          <div class="hidden md:block w-[45%]"></div>
-          <div class="absolute left-[-5px] md:left-1/2 md:translate-x-[-50%] w-3 h-3 bg-primary rounded-full group-hover:scale-150 transition-transform shadow-[0_0_10px_#00daf3]"></div>
-          <div class="md:w-[45%] glass p-md rounded-xl glass-hover transition-all">
-            <span class="text-xs font-space text-secondary mb-2 block">2022 - Presente</span>
-            <h3 class="font-bold text-lg">Senior Full Stack Developer</h3>
-            <p class="text-primary mb-4 text-sm font-medium">TechSolutions Inc.</p>
-            <ul class="text-sm text-on-surface-variant space-y-2 list-disc list-inside">
-              <li>Liderazgo de equipo de 5 desarrolladores.</li>
-              <li>Migración exitosa a arquitectura de microservicios.</li>
-              <li>Optimización de tiempos de carga en un 40%.</li>
-            </ul>
-          </div>
-        </div>
-        <div class="relative pl-8 md:pl-0 md:flex md:justify-between items-center group">
-          <div class="md:w-[45%] glass p-md rounded-xl glass-hover transition-all text-right order-1 md:order-none">
-            <span class="text-xs font-space text-secondary mb-2 block">2020 - 2022</span>
-            <h3 class="font-bold text-lg">Full Stack Developer</h3>
-            <p class="text-primary mb-4 text-sm font-medium">Innovate App Studio</p>
-            <ul class="text-sm text-on-surface-variant space-y-2 list-disc list-inside text-left md:text-right md:list-none">
-              <li>Desarrollo de aplicaciones móviles con React Native.</li>
-              <li>Implementación de pipelines CI/CD robustos.</li>
-              <li>Integración de sistemas de pago complejos.</li>
-            </ul>
-          </div>
-          <div class="absolute left-[-5px] md:left-1/2 md:translate-x-[-50%] w-3 h-3 bg-secondary rounded-full group-hover:scale-150 transition-transform shadow-[0_0_10px_#c0c1ff]"></div>
-          <div class="hidden md:block w-[45%]"></div>
-        </div>
+        {experience.map((job, index) => (
+          index % 2 === 0 ? (
+            <div class="relative pl-8 md:pl-0 md:flex md:justify-between items-center group">
+              <div class="hidden md:block w-[45%]"></div>
+              <div class="absolute left-[-5px] md:left-1/2 md:translate-x-[-50%] w-3 h-3 bg-primary rounded-full group-hover:scale-150 transition-transform shadow-[0_0_10px_#00daf3]"></div>
+              <div class="md:w-[45%] glass p-md rounded-xl glass-hover transition-all">
+                <span class="text-xs font-space text-secondary mb-2 block">{job.period}</span>
+                <h3 class="font-bold text-lg">{job.role}</h3>
+                <p class="text-primary mb-4 text-sm font-medium">{job.company}</p>
+                <ul class="text-sm text-on-surface-variant space-y-2 list-disc list-inside">
+                  {job.highlights.map((highlight) => <li>{highlight}</li>)}
+                </ul>
+              </div>
+            </div>
+          ) : (
+            <div class="relative pl-8 md:pl-0 md:flex md:justify-between items-center group">
+              <div class="md:w-[45%] glass p-md rounded-xl glass-hover transition-all text-right order-1 md:order-none">
+                <span class="text-xs font-space text-secondary mb-2 block">{job.period}</span>
+                <h3 class="font-bold text-lg">{job.role}</h3>
+                <p class="text-primary mb-4 text-sm font-medium">{job.company}</p>
+                <ul class="text-sm text-on-surface-variant space-y-2 list-disc list-inside text-left md:text-right md:list-none">
+                  {job.highlights.map((highlight) => <li>{highlight}</li>)}
+                </ul>
+              </div>
+              <div class="absolute left-[-5px] md:left-1/2 md:translate-x-[-50%] w-3 h-3 bg-secondary rounded-full group-hover:scale-150 transition-transform shadow-[0_0_10px_#c0c1ff]"></div>
+              <div class="hidden md:block w-[45%]"></div>
+            </div>
+          )
+        ))}
       </div>
     </div>
   </section>

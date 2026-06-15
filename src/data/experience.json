@@ -1,0 +1,22 @@
+[
+  {
+    "period": "2022 - Presente",
+    "role": "Senior Full Stack Developer",
+    "company": "TechSolutions Inc.",
+    "highlights": [
+      "Liderazgo de equipo de 5 desarrolladores.",
+      "Migración exitosa a arquitectura de microservicios.",
+      "Optimización de tiempos de carga en un 40%."
+    ]
+  },
+  {
+    "period": "2020 - 2022",
+    "role": "Full Stack Developer",
+    "company": "Innovate App Studio",
+    "highlights": [
+      "Desarrollo de aplicaciones móviles con React Native.",
+      "Implementación de pipelines CI/CD robustos.",
+      "Integración de sistemas de pago complejos."
+    ]
+  }
+]
