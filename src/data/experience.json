@@ -1,22 +1,50 @@
 [
   {
-    "period": "2022 - Presente",
-    "role": "Senior Full Stack Developer",
-    "company": "TechSolutions Inc.",
+    "period": "Ago. 2025 - Presente",
+    "role": "Software Developer",
+    "company": "KURAX",
     "highlights": [
-      "Liderazgo de equipo de 5 desarrolladores.",
-      "Migración exitosa a arquitectura de microservicios.",
-      "Optimización de tiempos de carga en un 40%."
+      "Desarrollo de soluciones de software en modalidad presencial.",
+      "Participación en proyectos de tecnología para clientes locales.",
+      "Colaboración en equipo multidisciplinario en Tacna, Perú."
     ]
   },
   {
-    "period": "2020 - 2022",
-    "role": "Full Stack Developer",
-    "company": "Innovate App Studio",
+    "period": "May. 2022 - Ago. 2025",
+    "role": "Software Developer",
+    "company": "NTT DATA",
     "highlights": [
-      "Desarrollo de aplicaciones móviles con React Native.",
-      "Implementación de pipelines CI/CD robustos.",
-      "Integración de sistemas de pago complejos."
+      "3 años y 4 meses en una de las empresas de IT más grandes del mundo.",
+      "Desarrollo de software en proyectos de escala empresarial.",
+      "Trabajo en equipo bajo estándares y metodologías globales."
+    ]
+  },
+  {
+    "period": "Abr. 2022 - May. 2022",
+    "role": "Software Developer",
+    "company": "Kurax SAC",
+    "highlights": [
+      "Desarrollo de software para clientes de la región."
+    ]
+  },
+  {
+    "period": "May. 2021 - Abr. 2022",
+    "role": "Software Developer",
+    "company": "CoDev | Agencia Digital",
+    "highlights": [
+      "Desarrollo web para clientes de la agencia digital.",
+      "Trabajo remoto con equipo basado en Colombia.",
+      "Participación en proyectos de diseño y desarrollo de productos digitales."
+    ]
+  },
+  {
+    "period": "Feb. 2020 - Dic. 2021",
+    "role": "Software Developer",
+    "company": "Profesional independiente",
+    "highlights": [
+      "Desarrollo de proyectos freelance para clientes variados.",
+      "Gestión integral de proyectos: relevamiento, desarrollo y entrega.",
+      "Construcción de base técnica en desarrollo web y mobile."
     ]
   }
 ]

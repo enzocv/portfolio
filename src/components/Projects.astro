@@ -41,7 +41,7 @@ const projects = await Promise.all(
 ---
 <section class="py-xl px-gutter max-w-7xl mx-auto" id="work">
   <h2 class="font-space text-3xl text-primary mb-xl text-center font-semibold">Proyectos Destacados</h2>
-  <div class="grid md:grid-cols-2 gap-lg lg:gap-xl">
+  <div class="grid md:grid-cols-2 gap-lg lg:gap-xl items-start">
     {projects.map((project) => (
       <div class={`glass group overflow-hidden rounded-xl ${project.offset ? 'md:mt-24' : ''}`}>
         <div class="h-64 overflow-hidden relative">
