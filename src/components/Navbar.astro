@@ -38,17 +38,21 @@ const navLinks = [
 		</button>
 	</div>
 
-	<div id="mobile-menu" class="hidden md:hidden flex-col px-gutter pb-4 border-t border-outline-variant/10">
-		{navLinks.map(link => (
-			<a class="block py-3 text-on-surface-variant hover:text-primary transition-colors text-sm font-medium border-b border-outline-variant/5" href={link.href}>{link.label}</a>
-		))}
-		<a
-			href={RESUME_PATH}
-			download
-			class="mt-4 bg-primary-container text-on-primary-container px-6 py-3 rounded-full font-bold inline-flex items-center justify-center gap-2"
-		>
-			<span class="material-symbols-outlined text-base">download</span> Descargar CV
-		</a>
+	<div id="mobile-menu" class="md:hidden grid grid-rows-[0fr] transition-[grid-template-rows] duration-300 ease-in-out">
+		<div class="overflow-hidden min-h-0">
+			<div data-menu-content class="flex flex-col px-gutter pb-4 border-t border-outline-variant/10 opacity-0 transition-opacity duration-300 delay-75">
+				{navLinks.map(link => (
+					<a class="block py-3 text-on-surface-variant hover:text-primary transition-colors text-sm font-medium border-b border-outline-variant/5" href={link.href}>{link.label}</a>
+				))}
+				<a
+					href={RESUME_PATH}
+					download
+					class="mt-4 bg-primary-container text-on-primary-container px-6 py-3 rounded-full font-bold inline-flex items-center justify-center gap-2"
+				>
+					<span class="material-symbols-outlined text-base">download</span> Descargar CV
+				</a>
+			</div>
+		</div>
 	</div>
 </nav>
 
@@ -83,22 +87,27 @@ const navLinks = [
 <script>
 	const btn = document.getElementById('mobile-menu-btn');
 	const menu = document.getElementById('mobile-menu');
+	const menuContent = menu?.querySelector('[data-menu-content]');
 	const icon = btn?.querySelector('.material-symbols-outlined');
 
 	const closeMenu = () => {
-		menu?.classList.add('hidden');
-		menu?.classList.remove('flex');
+		menu?.classList.remove('grid-rows-[1fr]');
+		menu?.classList.add('grid-rows-[0fr]');
+		menuContent?.classList.remove('opacity-100');
+		menuContent?.classList.add('opacity-0');
 		btn?.setAttribute('aria-expanded', 'false');
 		if (icon) icon.textContent = 'menu';
 	};
 
 	btn?.addEventListener('click', () => {
-		const isOpen = menu?.classList.contains('flex');
+		const isOpen = menu?.classList.contains('grid-rows-[1fr]');
 		if (isOpen) {
 			closeMenu();
 		} else {
-			menu?.classList.remove('hidden');
-			menu?.classList.add('flex');
+			menu?.classList.remove('grid-rows-[0fr]');
+			menu?.classList.add('grid-rows-[1fr]');
+			menuContent?.classList.remove('opacity-0');
+			menuContent?.classList.add('opacity-100');
 			btn.setAttribute('aria-expanded', 'true');
 			if (icon) icon.textContent = 'close';
 		}
