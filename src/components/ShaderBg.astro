@@ -7,13 +7,29 @@
   <script>
     const canvas = document.getElementById('shader-canvas-ANIMATION_3') as HTMLCanvasElement;
     if (canvas) {
-      function syncSize() {
+      const RESIZE_DEBOUNCE_MS = 200;
+      const MIN_RESIZE_DELTA_PX = 4;
+      let resizeTimer: ReturnType<typeof setTimeout> | null = null;
+
+      function applySize() {
         const w = canvas.clientWidth || 1280;
         const h = canvas.clientHeight || 720;
-        if (canvas.width !== w || canvas.height !== h) { canvas.width = w; canvas.height = h; }
+        if (Math.abs(canvas.width - w) >= MIN_RESIZE_DELTA_PX || Math.abs(canvas.height - h) >= MIN_RESIZE_DELTA_PX) {
+          canvas.width = w;
+          canvas.height = h;
+        }
       }
-      if (typeof ResizeObserver !== 'undefined') { new ResizeObserver(syncSize).observe(canvas); }
-      syncSize();
+
+      function scheduleResize() {
+        if (resizeTimer !== null) clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => {
+          resizeTimer = null;
+          applySize();
+        }, RESIZE_DEBOUNCE_MS);
+      }
+
+      if (typeof ResizeObserver !== 'undefined') { new ResizeObserver(scheduleResize).observe(canvas); }
+      applySize();
   
       const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
       if (gl instanceof WebGLRenderingContext) {
