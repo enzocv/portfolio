@@ -43,7 +43,7 @@
       }
     ]
   ],
-  "summary": "Desarrollador Full Stack con más de 6 años de experiencia en el desarrollo de aplicaciones web y servicios backend con NestJS y React para banca, telecomunicaciones, salud y logística en Perú, Chile, Argentina, Colombia y España. Más de 3 años en NTT DATA en proyectos para Banco de Crédito del Perú, Santander, Telefónica de Argentina, WOM, Clínica Alemana y Correos Express: desarrollo frontend y full stack (microservicios y microfrontends) y soporte de plataforma (pipelines de Jenkins y corrección de 20 vulnerabilidades de seguridad). En KURAX doy soporte N3 a sistemas legacy, desarrollo nuevos proyectos y he integrado 3 proveedores externos. En proyectos propios desarrollo plataformas SaaS multi-tenant con Next.js, NestJS y Go, y un microservicio de facturación electrónica para SUNAT.",
+  "summary": "Desarrollador Full Stack con más de 6 años de experiencia en el desarrollo de aplicaciones web y servicios backend con NestJS y React para banca, telecomunicaciones, salud y logística en Perú, Chile, Argentina, Colombia y España. Más de 3 años en NTT DATA en proyectos para Banco de Crédito del Perú, Santander, Telefónica de Argentina, WOM, Clínica Alemana y Correos Express: desarrollo frontend y full stack (microservicios y microfrontends) y soporte de plataforma (pipelines de Jenkins y corrección de 20 vulnerabilidades de seguridad). En KURAX doy soporte a sistemas legacy, desarrollo nuevos proyectos y he integrado 3 proveedores externos. En proyectos propios desarrollo plataformas SaaS multi-tenant con Next.js, NestJS y Go, y un microservicio de facturación electrónica para SUNAT.",
   "experience": [
     {
       "role": "Desarrollador Full Stack",
@@ -53,7 +53,7 @@
       "intro": "Equipo de 15 personas.",
       "stack": "NestJS, React, Astro, Python, GitHub Actions",
       "bullets": [
-        "Brindo soporte N3 a los sistemas legacy de la empresa y resuelvo sus incidencias en producción.",
+        "Brindo soporte a los sistemas legacy de la empresa y resuelvo sus incidencias en producción.",
         "Desarrollo nuevos proyectos full stack con NestJS, React y Astro.",
         "Integré 3 proveedores externos en los sistemas de la empresa: Lotobola, Calimaco First y GR Autoservicios."
       ]
