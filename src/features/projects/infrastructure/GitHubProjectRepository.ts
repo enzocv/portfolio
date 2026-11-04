@@ -22,6 +22,9 @@ interface GitHubRepoResponse {
   default_branch: string;
 }
 
+const PAGE_SIZE = 100;
+const MAX_PAGES = 10;
+
 /** Lee los proyectos desde la API REST de GitHub (en build time). */
 export class GitHubProjectRepository implements ProjectRepository {
   constructor(private readonly client: GitHubClient) {}
@@ -34,9 +37,14 @@ export class GitHubProjectRepository implements ProjectRepository {
   async listAccessible(): Promise<Project[]> {
     if (!this.client.hasToken) return [];
     // Con un token fine-grained, la lista incluye solo los repos que se le dieron.
-    const repos = await this.client.json<GitHubRepoResponse[]>(
-      '/user/repos?affiliation=owner&sort=pushed&direction=desc&per_page=100',
-    );
+    const repos: GitHubRepoResponse[] = [];
+    for (let page = 1; page <= MAX_PAGES; page++) {
+      const batch = await this.client.json<GitHubRepoResponse[]>(
+        `/user/repos?affiliation=owner&sort=pushed&direction=desc&per_page=${PAGE_SIZE}&page=${page}`,
+      );
+      repos.push(...batch);
+      if (batch.length < PAGE_SIZE) break;
+    }
     return repos
       .filter((r) => !r.fork && !r.archived)
       .map((r) => toProject(r, inferKind(r.name, r.description ?? '', r.topics ?? [], r.language)));

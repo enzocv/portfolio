@@ -20,7 +20,8 @@ export interface ShowcaseSettings {
   readonly discover: boolean;
   /** Repos que nunca se muestran (`owner/name`). */
   readonly exclude: readonly string[];
-  readonly maxProjects: number;
+  /** Tope opcional de proyectos; sin valor se muestran todos. */
+  readonly maxProjects?: number;
   /**
    * En modo estricto (CI o con token) un error al leer un repo destacado corta
    * el build, para no publicar el sitio con datos incompletos.
@@ -78,7 +79,6 @@ export async function loadShowcase(settings: ShowcaseSettings, deps: Dependencie
     try {
       discovered = (await deps.repository.listAccessible()).filter(
         (p) =>
-          p.description.trim() !== '' &&
           !featured.some((f) => sameRepo(f.repo, p.repo)) &&
           !settings.exclude.some((e) => sameRepo(e, p.repo)),
       );
@@ -87,7 +87,7 @@ export async function loadShowcase(settings: ShowcaseSettings, deps: Dependencie
     }
   }
 
-  const projects = [...featured, ...discovered].slice(0, settings.maxProjects);
+  const projects = [...featured, ...discovered].slice(0, settings.maxProjects ?? Infinity);
   return Promise.all(projects.map(async (project) => ({ project, media: await mediaOf(project, deps, log) })));
 }
 
