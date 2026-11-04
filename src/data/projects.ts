@@ -50,9 +50,8 @@ export const FEATURED_REPOS: readonly FeaturedRepo[] = [
 
 export const PROJECTS_SETTINGS = {
   featured: FEATURED_REPOS,
-  // Después de los fijos se agregan TODOS los demás repos a los que tenga acceso GH_REPOS_TOKEN
-  // (sin forks ni archivados), del más reciente al más antiguo.
-  // Para ocultar uno, agrégalo a `exclude`. Si algún día quieres un tope, agrega `maxProjects: 8`.
-  discover: true,
+  // Solo se muestran los repos de FEATURED_REPOS. No actives `discover`: la API de GitHub
+  // devuelve también todos los repos públicos de la cuenta, no solo los que se le dieron al token.
+  discover: false,
   exclude: ['enzocv/portfolio'],
 } as const;
