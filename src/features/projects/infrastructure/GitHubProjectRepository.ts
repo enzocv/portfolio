@@ -18,10 +18,13 @@ export class GitHubProjectRepository implements ProjectRepository {
   ) {}
 
   async findByRef(ref: FeaturedRepo): Promise<Project> {
-    const headers: Record<string, string> = { Accept: 'application/vnd.github+json' };
-    if (this.token) headers.Authorization = `Bearer ${this.token}`;
+    let res = await this.request(ref.repo, this.token);
 
-    const res = await this.fetchFn(`https://api.github.com/repos/${ref.repo}`, { headers });
+    // Token vencido o revocado: los repos públicos se pueden leer sin autenticación.
+    if (res.status === 401 && this.token) {
+      console.warn(`[projects] GH_REPOS_TOKEN rechazado (401) para ${ref.repo}; reintentando sin token. Renueva el secreto.`);
+      res = await this.request(ref.repo);
+    }
     if (!res.ok) throw new Error(`GitHub API error for ${ref.repo}: ${res.status}`);
 
     const data = (await res.json()) as GitHubRepoResponse;
@@ -39,5 +42,11 @@ export class GitHubProjectRepository implements ProjectRepository {
       demoUrl: data.homepage || null,
       codeUrl: data.private ? null : data.html_url,
     };
+  }
+
+  private request(repo: string, token?: string): Promise<Response> {
+    const headers: Record<string, string> = { Accept: 'application/vnd.github+json' };
+    if (token) headers.Authorization = `Bearer ${token}`;
+    return this.fetchFn(`https://api.github.com/repos/${repo}`, { headers });
   }
 }
