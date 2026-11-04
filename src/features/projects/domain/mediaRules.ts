@@ -4,7 +4,9 @@
  */
 
 const RASTER = /\.(png|jpe?g|webp)$/i;
-const IGNORED_DIRS = /(^|\/)(node_modules|vendor|dist|build|\.next|coverage|ios\/Pods|android\/app\/build)\//i;
+/** Dependencias, builds, tests y carpetas ocultas (bitácoras, `.github`…): no son imágenes de presentación. */
+const IGNORED_DIRS =
+  /(^|\/)(node_modules|vendor|dist|build|coverage|ios\/Pods|android\/app\/build|e2e|tests?|__tests__|fixtures|\.[^/]+)\//i;
 /** Carpetas con logos de terceros (medios de pago, partners…), no del proyecto. */
 const THIRD_PARTY_DIRS = /(^|\/)(logos|partners|brands|payments?|sponsors|flags|icons)\//i;
 

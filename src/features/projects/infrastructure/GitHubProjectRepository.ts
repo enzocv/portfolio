@@ -31,7 +31,14 @@ export class GitHubProjectRepository implements ProjectRepository {
 
   async findByRef(ref: FeaturedRepo): Promise<Project> {
     const data = await this.client.json<GitHubRepoResponse>(`/repos/${ref.repo}`);
-    return { ...toProject(data, ref.kind), screenshot: ref.screenshot };
+    const project = toProject(data, ref.kind);
+    return {
+      ...project,
+      title: ref.title ?? project.title,
+      description: ref.description ?? project.description,
+      screenshot: ref.screenshot,
+      mediaHints: { cover: ref.cover, icon: ref.icon },
+    };
   }
 
   async listAccessible(): Promise<Project[]> {

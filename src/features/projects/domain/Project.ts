@@ -11,6 +11,20 @@ export interface FeaturedRepo {
    * o URL absoluta. Tiene prioridad sobre la captura encontrada en el repo.
    */
   readonly screenshot?: string;
+  /** Nombre a mostrar (por defecto, el nombre del repo). */
+  readonly title?: string;
+  /** Descripción a mostrar si la del repo en GitHub está vacía o no sirve. */
+  readonly description?: string;
+  /** Ruta de una imagen dentro del repo para usar como captura (en vez de la detección automática). */
+  readonly cover?: string;
+  /** Ruta del ícono dentro del repo, o `false` si el repo solo tiene un ícono genérico de plantilla. */
+  readonly icon?: string | false;
+}
+
+/** Ajustes de imágenes que vienen de la configuración del portfolio. */
+export interface MediaHints {
+  readonly cover?: string;
+  readonly icon?: string | false;
 }
 
 export interface Project {
@@ -27,6 +41,7 @@ export interface Project {
   /** Imagen social de GitHub; `null` si el repo es privado (GitHub no la publica). */
   readonly socialImage: string | null;
   readonly screenshot?: string;
+  readonly mediaHints?: MediaHints;
   readonly demoUrl: string | null;
   readonly codeUrl: string | null;
 }

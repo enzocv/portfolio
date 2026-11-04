@@ -29,11 +29,17 @@ export class GitHubMediaSource implements MediaSource {
     const files: RepoFile[] = blobs.map((b) => ({ path: b.path, size: b.size ?? 0 }));
     const shaOf = new Map(blobs.map((b) => [b.path, b.sha]));
 
-    const icon = pickIcon(files);
-    const cover = (await this.readmeCover(project, shaOf)) ?? pickCover(files)?.path ?? null;
+    const hints = project.mediaHints ?? {};
+    const icon =
+      hints.icon === false ? null : hints.icon && shaOf.has(hints.icon) ? hints.icon : (pickIcon(files)?.path ?? null);
+    const cover =
+      hints.cover && shaOf.has(hints.cover)
+        ? hints.cover
+        : ((await this.readmeCover(project, shaOf)) ?? pickCover(files)?.path ?? null);
+    if (hints.cover && !shaOf.has(hints.cover)) console.warn(`[projects] ${project.repo}: no existe ${hints.cover}`);
 
     const [iconBytes, coverBytes] = await Promise.all([
-      icon ? this.download(project, shaOf.get(icon.path)!) : null,
+      icon ? this.download(project, shaOf.get(icon)!) : null,
       cover ? this.download(project, shaOf.get(cover)!) : null,
     ]);
     return { icon: iconBytes, cover: coverBytes };
