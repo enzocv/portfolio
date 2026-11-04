@@ -22,3 +22,6 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# salida intermedia del generador de CV (los PDF finales van en public/)
+cv/out/
