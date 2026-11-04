@@ -1,0 +1,112 @@
+---
+import Scene from './Scene.astro';
+
+const stats = [
+	{ value: '5+', label: 'años de experiencia' },
+	{ value: '50+', label: 'proyectos' },
+	{ value: '15+', label: 'tecnologías' },
+];
+
+const principles = ['Clean Code', 'Arquitectura', 'Escalabilidad'];
+---
+
+<Scene name="portal" anchor="about" label="Sobre mí" length="280vh" anchorAt={0.92}>
+	<div class="portal">
+		<div class="scene-bg">
+			<div class="wrap">
+				<div class="copy" data-portal-copy>
+					<p class="eyebrow">Sobre mí</p>
+					<h2>Hola, soy Enzo. Construyo software desde 2020.</h2>
+					<p class="text">
+						Bachiller en Ingeniería de Sistemas. Empecé como freelance, trabajé en remoto para una agencia en Colombia
+						y pasé más de tres años en NTT DATA en proyectos enterprise. Hoy desarrollo en KURAX, desde Tacna.
+						Me especializo en arquitecturas limpias y escalables, para que cada línea de código aporte valor a largo plazo.
+					</p>
+					<dl class="stats">
+						{stats.map((s) => (
+							<div><dt>{s.label}</dt><dd>{s.value}</dd></div>
+						))}
+					</dl>
+					<ul class="principles">
+						{principles.map((p) => <li>{p}</li>)}
+					</ul>
+				</div>
+			</div>
+		</div>
+
+		<svg class="mask" data-portal-mask aria-hidden="true">
+			<defs>
+				<mask id="portal-mask" maskUnits="userSpaceOnUse" x="0" y="0" width="100%" height="100%">
+					<rect x="0" y="0" width="100%" height="100%" fill="#fff"></rect>
+					<text data-portal-word fill="#000" text-anchor="middle" dominant-baseline="central">ENZO</text>
+				</mask>
+			</defs>
+			<rect x="0" y="0" width="100%" height="100%" fill="#0b1016" mask="url(#portal-mask)"></rect>
+		</svg>
+	</div>
+</Scene>
+
+<script>
+	import { mountScenes } from '../features/scroll';
+	import { PortalScene } from '../features/scroll/scenes/PortalScene';
+
+	mountScenes('portal', (root) => new PortalScene(root));
+</script>
+
+<style>
+	.portal { position: relative; height: 100%; min-height: 100svh; background: var(--color-ink); }
+	.scene-bg {
+		position: absolute;
+		inset: 0;
+		display: flex;
+		align-items: center;
+		padding-top: var(--nav-h);
+		background:
+			radial-gradient(70% 80% at 85% 15%, #6b78f0 0%, transparent 60%),
+			radial-gradient(60% 70% at 10% 95%, #ff9b3d 0%, transparent 60%),
+			linear-gradient(160deg, #2a2f6b, #12182a 60%, #23181a);
+	}
+	.scene-bg .wrap { width: 100%; }
+	.copy { max-width: 760px; }
+	.copy .eyebrow { color: #c9ceff; }
+	h2 {
+		margin: 12px 0 18px;
+		font-family: var(--font-display);
+		font-weight: 760;
+		font-size: clamp(30px, 5vw, 60px);
+		line-height: 1.02;
+		font-variation-settings: "wdth" 80;
+	}
+	.text { max-width: 60ch; font-size: clamp(16px, 1.8vw, 19px); color: #dfe3ff; }
+	.stats { display: flex; flex-wrap: wrap; gap: 14px 40px; margin: 28px 0 0; }
+	.stats div { display: flex; flex-direction: column-reverse; }
+	.stats dd {
+		margin: 0;
+		font-family: var(--font-display);
+		font-size: clamp(36px, 5vw, 56px);
+		font-weight: 800;
+		line-height: 1;
+		font-variant-numeric: tabular-nums;
+	}
+	.stats dt { font-size: 13px; color: #c9ceff; }
+	.principles { display: flex; flex-wrap: wrap; gap: 8px; margin: 24px 0 0; padding: 0; list-style: none; }
+	.principles li {
+		padding: 5px 12px;
+		border: 1px solid rgb(201 206 255 / 0.35);
+		border-radius: 999px;
+		font-family: var(--font-mono);
+		font-size: 12px;
+		color: #dfe3ff;
+	}
+
+	.mask { display: none; position: absolute; inset: 0; width: 100%; height: 100%; }
+	.mask text { font-family: var(--font-display); font-weight: 900; font-variation-settings: "wdth" 100; }
+
+	:global(html.motion) .mask { display: block; }
+	:global(html.motion) .copy { opacity: 0; transform: translateY(30px); }
+
+	@media (max-width: 760px) {
+		.text { font-size: 15px; }
+		.principles { display: none; }
+	}
+</style>

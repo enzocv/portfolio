@@ -1,0 +1,39 @@
+---
+/**
+ * Contenedor genérico de una escena de scroll.
+ *
+ * - Con `html.motion`: la sección mide `length` y su escenario queda fijo
+ *   (sticky) mientras el scroll avanza la animación.
+ * - Sin animación (reduced motion o sin JS): ocupa una pantalla y muestra
+ *   el estado final.
+ *
+ * El ancla (`anchor`) se ubica en el punto de la escena donde el contenido
+ * ya se lee completo (`anchorAt`, de 0 a 1), para que el menú lleve ahí.
+ */
+interface Props {
+	name: string;
+	anchor: string;
+	label: string;
+	length?: string;
+	anchorAt?: number;
+}
+
+const { name, anchor, label, length = '300vh', anchorAt = 0 } = Astro.props;
+---
+
+<section class="scene" data-scene={name} aria-label={label} style={`--len: ${length}; --anchor-at: ${anchorAt};`}>
+	<span class="scene-anchor" id={anchor}></span>
+	<div class="stage" data-stage>
+		<slot />
+	</div>
+</section>
+
+<style>
+	.scene { position: relative; }
+	.stage { position: relative; min-height: 100svh; overflow: hidden; }
+	.scene-anchor { position: absolute; top: 0; left: 0; width: 1px; height: 1px; pointer-events: none; }
+
+	:global(html.motion) .scene { height: var(--len); }
+	:global(html.motion) .stage { position: sticky; top: 0; height: 100vh; height: 100svh; min-height: 0; }
+	:global(html.motion) .scene-anchor { top: calc((var(--len) - 100vh) * var(--anchor-at)); }
+</style>

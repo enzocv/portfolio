@@ -1,39 +1,119 @@
 ---
-const services = [
-  {
-    icon: "language",
-    color: "primary",
-    title: "Web Development",
-    desc: "Sitios web de alto rendimiento construidos con tecnologías modernas como React y Next.js para una experiencia de usuario fluida.",
-  },
-  {
-    icon: "smartphone",
-    color: "secondary",
-    title: "Mobile Apps",
-    desc: "Aplicaciones móviles multiplataforma con React Native que ofrecen una experiencia consistente y potente en iOS y Android.",
-  },
-  {
-    icon: "api",
-    color: "primary",
-    title: "Backend & APIs",
-    desc: "Arquitecturas de servidor robustas y APIs escalables que sirven como el motor sólido de tus aplicaciones.",
-  },
-];
+import Scene from './Scene.astro';
+import { SERVICES } from '../data/services';
 ---
-<section class="py-xl px-gutter max-w-7xl mx-auto" id="services">
-    <div class="text-center mb-xl">
-      <h2 class="font-space text-3xl text-primary mb-2 font-semibold">Servicios Especializados</h2>
-      <p class="text-on-surface-variant">Soluciones integrales para desafíos tecnológicos modernos</p>
-    </div>
-    <div class="grid md:grid-cols-3 gap-md">
-      {services.map((service) => (
-        <div class={`glass p-lg rounded-xl border-b-4 ${service.color === 'primary' ? 'border-primary' : 'border-secondary'} hover:bg-surface-container-highest transition-colors`}>
-          <div class={`w-14 h-14 flex items-center justify-center rounded-2xl mb-4 ${service.color === 'primary' ? 'bg-primary/10 text-primary' : 'bg-secondary-container/20 text-secondary'}`}>
-            <span class="material-symbols-outlined text-3xl">{service.icon}</span>
-          </div>
-          <h3 class="font-space text-xl mb-4 font-semibold">{service.title}</h3>
-          <p class="text-on-surface-variant text-sm leading-relaxed">{service.desc}</p>
-        </div>
-      ))}
-    </div>
-  </section>
+
+<Scene name="dual" anchor="services" label="Servicios" length="240vh">
+	<div class="dual">
+		<div class="mode" aria-hidden="true">
+			<span class="is-active" data-dual-mode="dev">dev</span>
+			<span data-dual-mode="client">cliente</span>
+		</div>
+
+		<div class="face face-dev" aria-hidden="true">
+			<div class="wrap">
+				<p class="eyebrow">servicios.ts</p>
+				<p class="title">class Servicios</p>
+				<div class="cards">
+					{SERVICES.map(({ dev }) => (
+						<div class="card">
+							<span class="fn"><span class="k">{dev.fn}</span>()</span>
+							<span><span class="c">// </span>{dev.stack}</span>
+							<span>{dev.signature}</span>
+							<span class="s">→ {dev.result}</span>
+						</div>
+					))}
+				</div>
+			</div>
+		</div>
+
+		<div class="face face-client" data-dual-client>
+			<div class="wrap">
+				<p class="eyebrow">Servicios</p>
+				<h2 class="title">Lo que hago por tu negocio</h2>
+				<div class="cards">
+					{SERVICES.map(({ badge, client }) => (
+						<div class="card">
+							<span class="badge" aria-hidden="true">{badge}</span>
+							<h3>{client.title}</h3>
+							<p>{client.description}</p>
+						</div>
+					))}
+				</div>
+			</div>
+		</div>
+	</div>
+</Scene>
+
+<script>
+	import { mountScenes } from '../features/scroll';
+	import { DualViewScene } from '../features/scroll/scenes/DualViewScene';
+
+	mountScenes('dual', (root) => new DualViewScene(root));
+</script>
+
+<style>
+	.dual { position: relative; height: 100%; min-height: 100svh; background: #0c1219; }
+	.face { display: flex; flex-direction: column; justify-content: center; padding-block: calc(var(--nav-h) + 16px) 32px; }
+	.face .wrap { width: 100%; }
+	.title {
+		margin: 10px 0 34px;
+		font-family: var(--font-display);
+		font-weight: 780;
+		font-size: clamp(30px, 5vw, 60px);
+		line-height: 1;
+		font-variation-settings: "wdth" 85;
+	}
+	.cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+	.card { min-width: 0; min-height: 190px; display: flex; flex-direction: column; gap: 10px; padding: 22px; border-radius: 14px; }
+
+	/* Vista dev */
+	.face-dev { display: none; color: #cfd6df; }
+	.face-dev .title { font-family: var(--font-mono); font-weight: 500; font-size: clamp(22px, 3.4vw, 40px); font-variation-settings: normal; color: var(--color-accent); }
+	.face-dev .card { background: #111a24; border: 1px solid var(--color-line); font-family: var(--font-mono); font-size: 13px; line-height: 1.7; }
+	.fn { font-size: 18px; color: var(--color-fg); }
+	.k { color: var(--color-accent); }
+	.s { color: var(--color-warm); }
+	.c { color: var(--color-muted); }
+
+	/* Vista cliente */
+	.face-client { min-height: 100svh; background: var(--color-paper); color: var(--color-paper-fg); }
+	.face-client .eyebrow { color: #5b6573; }
+	.face-client .card { background: #fff; border: 1px solid #dde1e7; }
+	.face-client h3 { margin: 0; font-family: var(--font-display); font-size: 24px; font-weight: 780; line-height: 1.05; font-variation-settings: "wdth" 90; }
+	.face-client p { color: #47505c; font-size: 15px; }
+	.badge { width: 40px; height: 40px; display: grid; place-items: center; border-radius: 10px; background: var(--color-paper-fg); color: var(--color-paper); font-family: var(--font-mono); font-size: 13px; }
+
+	.mode {
+		display: none;
+		position: absolute;
+		z-index: 5;
+		top: calc(var(--nav-h) + 14px);
+		right: var(--gutter-r);
+		gap: 2px;
+		padding: 3px;
+		border: 1px solid var(--color-line);
+		border-radius: 999px;
+		background: var(--color-ink-3);
+		font-family: var(--font-mono);
+		font-size: 12px;
+	}
+	.mode span { padding: 5px 12px; border-radius: 999px; color: var(--color-muted); transition: background-color 0.3s, color 0.3s; }
+	.mode span:global(.is-active) { background: var(--color-warm); color: #0c1219; }
+
+	/* Modo animado: las dos vistas se superponen y el corte diagonal las alterna. */
+	:global(html.motion) .face { position: absolute; inset: 0; }
+	:global(html.motion) .face-dev { display: flex; }
+	:global(html.motion) .face-client { clip-path: polygon(125% 0, 100% 0, 100% 100%, 105% 100%); }
+	:global(html.motion) .mode { display: flex; }
+
+	@media (max-width: 760px) {
+		.cards { grid-template-columns: 1fr; gap: 10px; }
+		.card { min-height: 0; padding: 14px 16px; gap: 4px; }
+		.title { margin-bottom: 18px; }
+		.face-dev .card { font-size: 12px; }
+		.face-client p { font-size: 13px; }
+		.face-client h3 { font-size: 20px; }
+		.badge { display: none; }
+	}
+</style>

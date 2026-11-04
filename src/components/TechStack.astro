@@ -1,51 +1,131 @@
 ---
-const categories = [
-  {
-    title: "Frontend",
-    icon: "devices",
-    color: "primary",
-    items: ["React", "Next.js", "Angular", "React Native", "TypeScript", "Tailwind CSS"],
-  },
-  {
-    title: "Backend",
-    icon: "dns",
-    color: "secondary",
-    items: ["NestJS", "Node.js", "REST API", "GraphQL", "Python"],
-  },
-  {
-    title: "Databases",
-    icon: "storage",
-    color: "primary",
-    items: ["PostgreSQL", "MongoDB", "Redis", "Firebase"],
-  },
-  {
-    title: "DevOps",
-    icon: "terminal",
-    color: "secondary",
-    items: ["Docker", "Git", "CI/CD", "AWS", "Kubernetes"],
-  },
-];
+import Scene from './Scene.astro';
+import { STACK_LAYERS } from '../data/stack';
+
+// La leyenda va de arriba hacia abajo; el bloque 3D se apila desde la base.
+const fromBase = [...STACK_LAYERS].reverse();
 ---
-<section class="py-xl bg-surface-container-lowest/50" id="tech">
-    <div class="px-gutter max-w-7xl mx-auto">
-      <div class="text-center mb-xl">
-        <h2 class="font-space text-3xl text-primary mb-2 font-semibold">Stack Tecnológico</h2>
-        <p class="text-on-surface-variant">Herramientas y tecnologías que domino para dar vida a tus ideas</p>
-      </div>
-      <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-md">
-        {categories.map((category) => (
-          <div class={`glass p-md rounded-xl border-t-2 ${category.color === 'primary' ? 'border-primary' : 'border-secondary'}`}>
-            <h3 class={`font-space text-xl mb-4 flex items-center gap-3 ${category.color === 'primary' ? 'text-primary' : 'text-secondary'}`}>
-              <span class={`material-symbols-outlined w-9 h-9 flex items-center justify-center rounded-lg ${category.color === 'primary' ? 'bg-primary/10' : 'bg-secondary-container/20'}`}>{category.icon}</span>
-              {category.title}
-            </h3>
-            <div class="flex flex-wrap gap-2">
-              {category.items.map(t => (
-                <span class={`tech-badge px-3 py-1 rounded text-sm font-medium ${category.color === 'primary' ? 'text-primary' : 'border-secondary/20 text-secondary'}`}>{t}</span>
-              ))}
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  </section>
+
+<Scene name="layers" anchor="tech" label="Stack tecnológico" length="260vh">
+	<div class="layers">
+		<div class="copy">
+			<p class="eyebrow">Stack tecnológico</p>
+			<h2>Cada tecnología en su capa</h2>
+			<ol class="legend">
+				{STACK_LAYERS.map((layer) => (
+					<li data-layer-legend style={`--c: ${layer.color}`}>
+						<b>{layer.name}</b>
+						<span>{layer.items.join(' · ')}</span>
+					</li>
+				))}
+			</ol>
+			<p class="rule">// las dependencias apuntan hacia el dominio</p>
+		</div>
+		<div class="view" aria-hidden="true">
+			<div class="iso" data-layers-iso>
+				{fromBase.map((layer, i) => (
+					<div class="layer" data-layer style={`--c: ${layer.color}; --i: ${i}`}>
+						<span class="l-name">{layer.name}</span>
+						<span class="l-tech">{layer.short}</span>
+					</div>
+				))}
+			</div>
+		</div>
+	</div>
+</Scene>
+
+<script>
+	import { mountScenes } from '../features/scroll';
+	import { LayersScene } from '../features/scroll/scenes/LayersScene';
+
+	mountScenes('layers', (root) => new LayersScene(root));
+</script>
+
+<style>
+	.layers {
+		height: 100%;
+		min-height: 100svh;
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+		align-items: center;
+		gap: 24px;
+		padding: var(--nav-h) var(--gutter-r) 24px var(--gutter-l);
+		background: radial-gradient(50% 60% at 70% 50%, rgb(138 151 255 / 0.12), transparent 70%), var(--color-ink-2);
+	}
+	.copy { justify-self: end; max-width: 460px; min-width: 0; }
+	h2 {
+		margin: 10px 0 20px;
+		font-family: var(--font-display);
+		font-weight: 760;
+		font-size: clamp(28px, 3.6vw, 44px);
+		line-height: 1.02;
+		font-variation-settings: "wdth" 85;
+	}
+	.legend { display: grid; gap: 4px; margin: 0; padding: 0; list-style: none; }
+	.legend li {
+		padding: 10px 12px;
+		border-left: 2px solid transparent;
+		border-radius: 8px;
+		transition: background-color 0.3s, border-color 0.3s;
+	}
+	.legend b {
+		display: block;
+		font-family: var(--font-mono);
+		font-size: 12px;
+		font-weight: 500;
+		letter-spacing: 0.1em;
+		text-transform: uppercase;
+		color: var(--c);
+		transition: color 0.3s;
+	}
+	.legend span { font-size: 14px; color: #aeb8c6; }
+	.legend li:global(.is-active) { background: var(--color-ink-3); border-color: var(--c); }
+	.rule { margin-top: 18px; font-family: var(--font-mono); font-size: 12px; color: var(--color-muted); }
+
+	.view { height: 100%; display: grid; place-items: center; min-width: 0; }
+	.iso {
+		--size: clamp(170px, 26vw, 300px);
+		--lift: calc(var(--size) * 0.36);
+		position: relative;
+		width: var(--size);
+		height: var(--size);
+		transform-style: preserve-3d;
+		transform: translateY(var(--lift)) rotateX(58deg) rotateZ(-42deg);
+	}
+	.layer {
+		--z: calc(var(--i) * var(--size) * 0.3);
+		position: absolute;
+		inset: 0;
+		display: flex;
+		flex-direction: column;
+		justify-content: flex-end;
+		padding: 14px 16px;
+		border: 1px solid color-mix(in srgb, var(--c) 70%, transparent);
+		border-radius: 16px;
+		background: color-mix(in srgb, var(--c) 16%, #0f161f);
+		transform: translateZ(var(--z));
+		transition: background-color 0.3s, box-shadow 0.3s;
+	}
+	.layer:global(.is-active) {
+		background: color-mix(in srgb, var(--c) 34%, #0f161f);
+		box-shadow: 0 0 60px color-mix(in srgb, var(--c) 45%, transparent);
+	}
+	.l-name { font-family: var(--font-display); font-weight: 800; font-size: calc(var(--size) * 0.085); line-height: 1; color: var(--c); }
+	.l-tech { margin-top: 4px; font-family: var(--font-mono); font-size: calc(var(--size) * 0.04); color: #c8d0db; }
+
+	/* En la animación la leyenda solo se colorea al activarse. */
+	:global(html.motion) .legend b { color: var(--color-muted); }
+	:global(html.motion) .legend li:global(.is-active) b { color: var(--c); }
+
+	@media (max-width: 760px) {
+		.layers { grid-template-columns: 1fr; grid-template-rows: auto minmax(0, 1fr); gap: 0; padding-top: calc(var(--nav-h) + 12px); }
+		.copy { justify-self: stretch; max-width: none; }
+		h2 { margin: 6px 0 10px; font-size: 26px; }
+		.legend { grid-template-columns: 1fr 1fr; }
+		.legend li { padding: 6px 8px; }
+		.legend span { font-size: 12px; }
+		.rule { display: none; }
+		.view { min-height: 300px; }
+		.iso { --size: min(52vw, 190px); }
+	}
+</style>

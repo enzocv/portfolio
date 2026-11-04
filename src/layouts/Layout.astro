@@ -1,149 +1,212 @@
 ---
-import ShaderBg from '../components/ShaderBg.astro';
 import { withBase } from '../utils/paths';
 
 interface Props {
 	title: string;
+	description?: string;
+	/** Carga Material Symbols (solo lo usa la página de privacidad). */
+	withIcons?: boolean;
 }
 
-const { title } = Astro.props;
+const {
+	title,
+	description = 'Enzo Catalán, Full Stack Developer en Tacna, Perú. Web, apps móviles y APIs con arquitectura limpia.',
+	withIcons = false,
+} = Astro.props;
 ---
 
 <!doctype html>
-<html lang="es" class="dark scroll-smooth">
+<html lang="es">
 	<head>
 		<meta charset="UTF-8" />
-		<meta name="description" content="Portfolio Full Stack" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<meta name="theme-color" content="#051424" />
+		<meta name="description" content={description} />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+		<meta name="theme-color" content="#0b1016" />
+		<meta name="color-scheme" content="dark" />
 		<link rel="icon" type="image/svg+xml" href={withBase('/favicon.svg')} />
 		<title>{title}</title>
-		<link rel="preconnect" href="https://fonts.googleapis.com">
-		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Space+Grotesk:wght@400;600;700&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+		<!-- Las escenas se animan solo si el usuario no pidió reducir el movimiento. -->
+		<script is:inline>
+			if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+				document.documentElement.classList.add('motion');
+			}
+		</script>
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Anybody:wdth,wght@50..150,300..900&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap"
+			rel="stylesheet"
+		/>
+		{withIcons && (
+			<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+		)}
 	</head>
-	<body class="bg-background text-on-surface font-inter overflow-x-hidden antialiased">
-		<ShaderBg />
+	<body class="bg-ink text-fg font-body antialiased">
+		<div class="scroll-progress" aria-hidden="true"></div>
 		<slot />
 	</body>
 </html>
 
 <style is:global>
-	/* Importar Tailwind v4 de manera nativa */
 	@import "tailwindcss";
-  
-	/* Configuración del tema nativo para v4 (Reemplaza a tailwind.config.mjs) */
+
 	@theme {
-	  --color-background: #051424;
-	  --color-surface: #051424;
-	  --color-surface-bright: #2c3a4c;
-	  --color-surface-container-lowest: #010f1f;
-	  --color-surface-container-low: #0d1c2d;
-	  --color-surface-container: #122131;
-	  --color-surface-container-high: #1c2b3c;
-	  --color-surface-container-highest: #273647;
-	  
-	  --color-on-surface: #d4e4fa;
-	  --color-on-surface-variant: #bac9cc;
-	  --color-inverse-surface: #d4e4fa;
-	  --color-inverse-on-surface: #233143;
-	  --color-outline: #849396;
-	  --color-outline-variant: #3b494c;
-	  
-	  --color-primary: #c3f5ff;
-	  --color-on-primary: #00363d;
-	  --color-primary-container: #00e5ff;
-	  --color-on-primary-container: #00626e;
-	  --color-inverse-primary: #006875;
-	  
-	  --color-secondary: #c0c1ff;
-	  --color-on-secondary: #1000a9;
-	  --color-secondary-container: #3131c0;
-	  --color-on-secondary-container: #b0b2ff;
-	  
-	  --color-tertiary: #e8ecff;
-	  --color-on-tertiary: #283044;
-	  --color-tertiary-container: #c8d0ea;
-	  --color-on-tertiary-container: #51596f;
-  
-	  --color-primary-fixed: #9cf0ff;
-	  --color-primary-fixed-dim: #00daf3;
-	  --color-on-primary-fixed: #001f24;
-	  --color-on-primary-fixed-variant: #004f58;
-  
-	  /* Espaciados personalizados del sistema de diseño */
-	  --spacing-xs: 0.5rem;
-	  --spacing-sm: 1rem;
-	  --spacing-md: 1.5rem;
-	  --spacing-lg: 2.5rem;
-	  --spacing-xl: 4rem;
-	  --spacing-gutter: 1.5rem;
-	  --spacing-margin: 2rem;
-  
-	  /* Tipografías */
-	  --font-space: "Space Grotesk", sans-serif;
-	  --font-inter: "Inter", sans-serif;
+		/* Paleta: tinta azulada, acento lavanda y un cálido ámbar para lo importante. */
+		--color-ink: #0b1016;
+		--color-ink-2: #121a23;
+		--color-ink-3: #1a2430;
+		--color-line: #263344;
+		--color-fg: #e7ebf1;
+		--color-soft: #c4ccd8;
+		--color-muted: #8f9bab;
+		--color-accent: #8a97ff;
+		--color-warm: #ffb54d;
+		--color-ok: #5fd6a0;
+		--color-paper: #eef0f3;
+		--color-paper-fg: #18202b;
+
+		/* Alias heredados (los usa la página de privacidad). */
+		--color-background: var(--color-ink);
+		--color-surface: var(--color-ink);
+		--color-surface-container-lowest: #0e141b;
+		--color-surface-container-low: var(--color-ink-2);
+		--color-surface-container: var(--color-ink-2);
+		--color-surface-container-high: var(--color-ink-3);
+		--color-surface-container-highest: #222e3c;
+		--color-surface-bright: #2a3747;
+		--color-on-surface: var(--color-fg);
+		--color-on-surface-variant: #b3bdca;
+		--color-outline: #5c6b7e;
+		--color-outline-variant: var(--color-line);
+		--color-primary: var(--color-accent);
+		--color-primary-container: var(--color-accent);
+		--color-on-primary-container: var(--color-ink);
+		--color-secondary: var(--color-warm);
+		--color-secondary-container: #4a3a1f;
+
+		--spacing-xs: 0.5rem;
+		--spacing-sm: 1rem;
+		--spacing-md: 1.5rem;
+		--spacing-lg: 2.5rem;
+		--spacing-xl: 4rem;
+		--spacing-gutter: 1.5rem;
+		--spacing-margin: 2rem;
+
+		--font-display: "Anybody", "Arial Narrow", system-ui, sans-serif;
+		--font-body: "Geist", system-ui, -apple-system, "Segoe UI", sans-serif;
+		--font-mono: "Geist Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+		/* Alias heredados. */
+		--font-space: var(--font-display);
+		--font-inter: var(--font-body);
 	}
-  
-	/* Clases utilitarias personalizadas y animaciones */
+
 	@utility glass {
-	  background: rgba(15, 23, 42, 0.7);
-	  backdrop-filter: blur(12px);
-	  border: 1px solid rgba(30, 41, 59, 0.5);
+		background: color-mix(in srgb, var(--color-ink-2) 85%, transparent);
+		backdrop-filter: blur(12px);
+		border: 1px solid var(--color-line);
 	}
-  
-	@utility glass-hover {
-	  &:hover {
-		border-color: #00e5ff;
-		background: rgba(15, 23, 42, 0.85);
-	  }
+
+	:root {
+		--nav-h: 64px;
+		--gutter-l: max(16px, env(safe-area-inset-left, 0px));
+		--gutter-r: max(16px, env(safe-area-inset-right, 0px));
+		color-scheme: dark;
 	}
-  
-	@utility tech-badge {
-	  background: rgba(0, 229, 255, 0.1);
-	  border: 1px solid rgba(0, 229, 255, 0.2);
-	}
-  
-	@utility animate-reveal {
-	  animation: fadeIn 0.8s ease-out forwards;
-	}
-  
-	@utility animate-float {
-	  animation: float 6s ease-in-out infinite;
-	}
-  
-	@keyframes fadeIn { 
-	  from { opacity: 0; transform: translateY(20px); } 
-	  to { opacity: 1; transform: translateY(0); } 
-	}
-	
-	@keyframes float { 
-	  0%, 100% { transform: translateY(0px); } 
-	  50% { transform: translateY(-20px); } 
-	}
-  
-	/* Clases de compatibilidad para fuentes de tu HTML antiguo */
-	.font-headline-md, .font-display-lg, .font-code { font-family: var(--font-space); }
-	.font-body-md, .font-body-lg, .font-label-md { font-family: var(--font-inter); }
-  
-	/* Asegurar visibilidad inicial de los elementos controlados por JS */
-	.opacity-0.animate-reveal { opacity: 1; }
-  
+
 	html {
-	  scroll-behavior: smooth;
-	  scroll-padding-top: 5rem; /* compensa la altura del navbar fijo al navegar por anclas */
+		background: var(--color-ink);
+		scroll-behavior: smooth;
 	}
+
+	body {
+		font-size: 16px;
+		line-height: 1.6;
+		overflow-x: clip;
+	}
+
+	h1, h2, h3 { text-wrap: balance; }
+
+	a:focus-visible, button:focus-visible {
+		outline: 2px solid var(--color-warm);
+		outline-offset: 3px;
+		border-radius: 4px;
+	}
+
+	@layer components {
+		.wrap {
+			max-width: 1120px;
+			margin-inline: auto;
+			padding-left: var(--gutter-l);
+			padding-right: var(--gutter-r);
+		}
+		.eyebrow {
+			font-family: var(--font-mono);
+			font-size: 12px;
+			letter-spacing: 0.14em;
+			text-transform: uppercase;
+			color: var(--color-muted);
+		}
+		.cursor {
+			display: inline-block;
+			width: 0.6em;
+			height: 1.1em;
+			vertical-align: -0.2em;
+			background: var(--color-warm);
+			animation: cursor-blink 1s steps(2) infinite;
+		}
+		.btn {
+			display: inline-flex;
+			align-items: center;
+			gap: 8px;
+			padding: 12px 22px;
+			border-radius: 999px;
+			font-weight: 600;
+			font-size: 15px;
+			text-decoration: none;
+			cursor: pointer;
+			border: 1px solid transparent;
+			transition: background-color 0.2s, border-color 0.2s, color 0.2s;
+		}
+		.btn-solid { background: var(--color-fg); color: var(--color-ink); }
+		.btn-solid:hover { background: var(--color-warm); }
+		.btn-ghost { border-color: var(--color-line); color: var(--color-fg); }
+		.btn-ghost:hover { border-color: var(--color-accent); background: var(--color-ink-3); }
+	}
+
+	@keyframes cursor-blink { 50% { opacity: 0; } }
+
+	/* Barra de progreso global con CSS scroll-driven (sin JS). */
+	.scroll-progress {
+		position: fixed;
+		top: 0;
+		left: 0;
+		right: 0;
+		height: 3px;
+		z-index: 60;
+		background: linear-gradient(90deg, var(--color-accent), var(--color-warm));
+		transform-origin: 0 50%;
+		transform: scaleX(0);
+		pointer-events: none;
+	}
+	@supports (animation-timeline: scroll()) {
+		.scroll-progress {
+			animation: scroll-progress-grow linear both;
+			animation-timeline: scroll(root block);
+		}
+		@keyframes scroll-progress-grow { to { transform: scaleX(1); } }
+	}
+
 	::-webkit-scrollbar { width: 8px; }
-	::-webkit-scrollbar-track { background: #051424; }
-	::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 4px; }
-	::-webkit-scrollbar-thumb:hover { background: #00e5ff; }
+	::-webkit-scrollbar-track { background: var(--color-ink); }
+	::-webkit-scrollbar-thumb { background: var(--color-line); border-radius: 4px; }
+	::-webkit-scrollbar-thumb:hover { background: var(--color-accent); }
 
 	@media (prefers-reduced-motion: reduce) {
-	  *, *::before, *::after {
-		animation-duration: 0.01ms !important;
-		animation-iteration-count: 1 !important;
-		transition-duration: 0.01ms !important;
-		scroll-behavior: auto !important;
-	  }
+		html { scroll-behavior: auto; }
+		*, *::before, *::after {
+			animation-duration: 0.01ms !important;
+			animation-iteration-count: 1 !important;
+			transition-duration: 0.01ms !important;
+		}
 	}
-  </style>
+</style>

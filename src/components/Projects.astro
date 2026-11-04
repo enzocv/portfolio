@@ -1,83 +1,234 @@
 ---
+import Scene from './Scene.astro';
 import { SOCIAL_LINKS } from '../data/social';
+import { FEATURED_REPOS } from '../data/projects';
+import { getFeaturedProjects } from '../features/projects/application/getFeaturedProjects';
+import { GitHubProjectRepository } from '../features/projects/infrastructure/GitHubProjectRepository';
+import { withBase } from '../utils/paths';
 
-// Repos a destacar: agrega, quita o reordena entradas para cambiar qué se muestra.
-const FEATURED_REPOS = [
-  { repo: 'enzocv/fintrack', tag: 'Mobile', offset: false },
-  { repo: 'enzocv/hotelv2', tag: 'Web', offset: true },
-  { repo: 'enzocv/babymind', tag: 'Mobile', offset: false },
-];
+const token = import.meta.env.GH_REPOS_TOKEN as string | undefined;
+const projects = await getFeaturedProjects(new GitHubProjectRepository(token), FEATURED_REPOS, {
+	strict: Boolean(token) || process.env.CI === 'true',
+});
 
-const token = import.meta.env.GH_REPOS_TOKEN;
-
-const projects = await Promise.all(
-  FEATURED_REPOS.map(async ({ repo, tag, offset }) => {
-    const res = await fetch(`https://api.github.com/repos/${repo}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        Accept: 'application/vnd.github+json',
-      },
-    });
-
-    if (!res.ok) {
-      throw new Error(`GitHub API error for ${repo}: ${res.status}`);
-    }
-
-    const data = await res.json();
-    const topics: string[] = data.topics?.length ? data.topics : [data.language].filter(Boolean);
-
-    return {
-      title: data.name as string,
-      tag,
-      desc: (data.description as string) ?? '',
-      techs: topics.map((t) => `#${t}`),
-      img: `https://opengraph.githubassets.com/1/${repo}`,
-      demoUrl: data.homepage as string | null,
-      codeUrl: data.private ? null : (data.html_url as string),
-      offset,
-    };
-  })
-);
+const screenOf = (src?: string) => (src && src.startsWith('/') ? withBase(src) : src);
+// Cada proyecto ocupa ~1 pantalla de scroll, más una de entrada/salida.
+const length = `${100 + projects.length * 90}vh`;
+const total = String(projects.length).padStart(2, '0');
 ---
-<section class="py-xl px-gutter max-w-7xl mx-auto" id="work">
-  <h2 class="font-space text-3xl text-primary mb-xl text-center font-semibold">Proyectos Destacados</h2>
-  <div class="grid md:grid-cols-2 gap-lg lg:gap-xl items-start">
-    {projects.map((project) => (
-      <div class={`glass group overflow-hidden rounded-xl ${project.offset ? 'md:mt-24' : ''}`}>
-        <div class="h-64 overflow-hidden relative">
-          <img src={project.img} alt={project.title} class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
-          {(project.demoUrl || project.codeUrl) && (
-            <div class="absolute inset-0 bg-surface/40 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity flex items-center justify-center gap-md">
-              {project.demoUrl && (
-                <a href={project.demoUrl} target="_blank" rel="noopener noreferrer" aria-label="Ver demo" class="w-12 h-12 flex items-center justify-center bg-primary-container text-on-primary-container rounded-full hover:scale-110 transition-transform"><span class="material-symbols-outlined">visibility</span></a>
-              )}
-              {project.codeUrl && (
-                <a href={project.codeUrl} target="_blank" rel="noopener noreferrer" aria-label="Ver código" class="w-12 h-12 flex items-center justify-center bg-surface rounded-full hover:scale-110 transition-transform border border-outline"><span class="material-symbols-outlined">code</span></a>
-              )}
-            </div>
-          )}
-        </div>
-        <div class="p-md">
-          <div class="flex justify-between items-start mb-4">
-            <h3 class="font-space text-2xl text-primary font-semibold">{project.title}</h3>
-            <span class="text-xs font-space px-2 py-1 bg-surface-container rounded text-secondary">{project.tag}</span>
-          </div>
-          <p class="text-on-surface-variant mb-6 text-sm leading-relaxed">{project.desc}</p>
-          <div class="flex flex-wrap gap-2">
-            {project.techs.map(tech => <span class="text-xs font-space opacity-60">{tech}</span>)}
-          </div>
-        </div>
-      </div>
-    ))}
-  </div>
-  <div class="mt-xl flex justify-center">
-    <a
-      href={SOCIAL_LINKS.github}
-      target="_blank"
-      rel="noopener noreferrer"
-      class="border border-outline text-on-surface px-8 py-4 rounded-full font-bold hover:bg-surface-container-highest transition-all inline-flex items-center gap-2"
-    >
-      Ver más en GitHub <span class="material-symbols-outlined">arrow_outward</span>
-    </a>
-  </div>
-</section>
+
+<Scene name="rail" anchor="work" label="Proyectos destacados" length={length}>
+	<div class="rail">
+		<div class="head">
+			<p class="eyebrow">Proyectos destacados</p>
+			<span class="count" aria-hidden="true"><b data-rail-counter>01</b> / {total}</span>
+		</div>
+
+		<div class="grid">
+			<div class="info">
+				{projects.map((project, i) => (
+					<article
+						class:list={['proj', { 'is-active': i === 0 }]}
+						data-rail-item
+						data-kind={project.kind === 'Web' ? 'browser' : 'phone'}
+					>
+						<span class="tag">{project.kind}</span>
+						<h3>{project.title}</h3>
+						{project.description && <p class="desc">{project.description}</p>}
+						{project.techs.length > 0 && <p class="techs">{project.techs.map((t) => `#${t}`).join(' ')}</p>}
+						{(project.demoUrl || project.codeUrl) && (
+							<div class="links">
+								{project.demoUrl && <a class="btn btn-solid" href={project.demoUrl} target="_blank" rel="noopener noreferrer">Ver demo</a>}
+								{project.codeUrl && <a class="btn btn-ghost" href={project.codeUrl} target="_blank" rel="noopener noreferrer">Código</a>}
+							</div>
+						)}
+					</article>
+				))}
+				<a class="more" href={SOCIAL_LINKS.github} target="_blank" rel="noopener noreferrer">Ver más en GitHub ↗</a>
+			</div>
+
+			<div class="device-wrap" data-rail-wrap aria-hidden="true">
+				<div class="device" data-rail-device>
+					<div class="notch" data-rail-notch></div>
+					<div class="bar" data-rail-bar><i></i><i></i><i></i><span>github.com/enzocv</span></div>
+					<div class="screen">
+						<div class="strip" data-rail-strip style={`width: ${projects.length * 100}%`}>
+							{projects.map((project) => {
+								const shot = screenOf(project.screenshot) ?? (project.kind === 'Web' ? project.socialImage : undefined);
+								return (
+									<div class:list={['mock', project.kind === 'Web' ? 'mock-web' : 'mock-app']}>
+										{shot ? (
+											<img src={shot} alt="" loading="lazy" decoding="async" />
+										) : (
+											<div class="app">
+												<span class="app-icon">{project.title.charAt(0).toUpperCase()}</span>
+												<strong>{project.title}</strong>
+												{project.description && <p>{project.description}</p>}
+												<div class="chips">
+													{(project.techs.length ? project.techs : [project.kind]).slice(0, 4).map((t) => <span>{t}</span>)}
+												</div>
+												<div class="app-cards"><i></i><i></i><i></i></div>
+											</div>
+										)}
+									</div>
+								);
+							})}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="progress"><i data-rail-progress></i></div>
+	</div>
+</Scene>
+
+<script>
+	import { mountScenes } from '../features/scroll';
+	import { DeviceRailScene } from '../features/scroll/scenes/DeviceRailScene';
+
+	mountScenes('rail', (root) => new DeviceRailScene(root));
+</script>
+
+<style>
+	.rail {
+		height: 100%;
+		min-height: 100svh;
+		display: flex;
+		flex-direction: column;
+		padding: calc(var(--nav-h) + 12px) var(--gutter-r) 40px var(--gutter-l);
+		background: var(--color-ink);
+	}
+	.head, .grid, .progress { width: 100%; max-width: 1120px; margin-inline: auto; }
+	.head { display: flex; justify-content: space-between; align-items: baseline; }
+	.count { font-family: var(--font-mono); font-size: 13px; color: var(--color-muted); font-variant-numeric: tabular-nums; }
+	.count b { color: var(--color-fg); font-weight: 500; }
+
+	.grid { display: grid; gap: 32px; }
+	.info { display: grid; gap: 40px; min-width: 0; padding-block: 32px; }
+	.tag {
+		align-self: flex-start;
+		padding: 3px 8px;
+		border: 1px solid var(--color-line);
+		border-radius: 4px;
+		font-family: var(--font-mono);
+		font-size: 11px;
+		letter-spacing: 0.1em;
+		text-transform: uppercase;
+		color: var(--color-muted);
+	}
+	.proj { display: flex; flex-direction: column; }
+	.proj h3 {
+		margin: 12px 0;
+		font-family: var(--font-display);
+		font-weight: 820;
+		font-size: clamp(40px, 6vw, 84px);
+		line-height: 0.95;
+		font-variation-settings: "wdth" 70;
+		overflow-wrap: anywhere;
+	}
+	.desc { max-width: 40ch; color: var(--color-soft); }
+	.techs { margin-top: 14px; font-family: var(--font-mono); font-size: 12px; color: var(--color-muted); }
+	.links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
+	.links .btn { padding: 9px 18px; font-size: 14px; }
+	.more { align-self: start; color: var(--color-accent); font-size: 14px; text-underline-offset: 3px; }
+
+	/* El marco solo existe en el modo animado. */
+	.device-wrap { display: none; height: 100%; min-height: 0; place-items: center; min-width: 0; }
+	.device {
+		position: relative;
+		width: 260px;
+		height: 520px;
+		overflow: hidden;
+		border: 1px solid #33404f;
+		border-radius: 38px;
+		background: #05080c;
+		box-shadow: 0 40px 90px rgb(0 0 0 / 0.55), inset 0 0 0 6px #0b1118;
+	}
+	.notch { position: absolute; top: 12px; left: 50%; z-index: 3; width: 76px; height: 20px; border-radius: 12px; background: #05080c; transform: translateX(-50%); }
+	.bar {
+		position: absolute;
+		inset: 0 0 auto;
+		z-index: 3;
+		height: 34px;
+		display: flex;
+		align-items: center;
+		gap: 6px;
+		padding: 0 12px;
+		background: #141c26;
+		border-bottom: 1px solid var(--color-line);
+		opacity: 0;
+	}
+	.bar i { width: 9px; height: 9px; border-radius: 50%; background: #33404f; }
+	.bar span {
+		flex: 1;
+		max-width: 260px;
+		margin-left: 10px;
+		padding: 3px 10px;
+		border-radius: 6px;
+		background: #0b1118;
+		font-family: var(--font-mono);
+		font-size: 11px;
+		color: var(--color-muted);
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+	.screen { position: absolute; inset: 6px; overflow: hidden; border-radius: inherit; }
+	.strip { display: flex; height: 100%; }
+	.mock { flex: 1 1 0; min-width: 0; height: 100%; overflow: hidden; }
+	.mock img { width: 100%; height: 100%; object-fit: cover; display: block; }
+	.mock-web { background: #0d1117; padding-top: 34px; }
+	.mock-web img { object-fit: contain; }
+	.mock-app { background: linear-gradient(170deg, #1c2340, #10151f 70%); }
+	.app { height: 100%; display: flex; flex-direction: column; gap: 10px; padding: 52px 18px 18px; color: var(--color-fg); }
+	.app-icon {
+		width: 56px;
+		height: 56px;
+		display: grid;
+		place-items: center;
+		border-radius: 16px;
+		background: linear-gradient(135deg, var(--color-accent), var(--color-warm));
+		color: var(--color-ink);
+		font-family: var(--font-display);
+		font-size: 28px;
+		font-weight: 850;
+	}
+	.app strong { font-family: var(--font-display); font-size: 24px; font-weight: 800; line-height: 1.05; overflow-wrap: anywhere; }
+	.app p { font-size: 13px; line-height: 1.45; color: var(--color-soft); display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
+	.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+	.chips span { padding: 3px 8px; border-radius: 999px; background: rgb(255 255 255 / 0.08); font-family: var(--font-mono); font-size: 10px; color: var(--color-soft); }
+	.app-cards { margin-top: auto; display: grid; gap: 8px; }
+	.app-cards i { height: 38px; border-radius: 12px; background: rgb(255 255 255 / 0.06); }
+	.app-cards i:first-child { height: 64px; background: rgb(138 151 255 / 0.16); }
+
+	.progress { display: none; position: relative; height: 2px; margin-top: 12px; background: var(--color-line); }
+	.progress i { position: absolute; inset: 0; background: var(--color-warm); transform-origin: 0 50%; transform: scaleX(0); }
+
+	/* Modo animado: un proyecto a la vez junto al marco. */
+	:global(html.motion) .grid { flex: 1; min-height: 0; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); align-items: center; }
+	:global(html.motion) .info { position: relative; display: block; min-height: 300px; padding: 0; }
+	:global(html.motion) .proj {
+		position: absolute;
+		inset: 0 0 32px;
+		justify-content: center;
+		opacity: 0;
+		transform: translateY(24px);
+		pointer-events: none;
+		transition: opacity 0.45s, transform 0.45s;
+	}
+	:global(html.motion) .proj:global(.is-active) { opacity: 1; transform: none; pointer-events: auto; }
+	:global(html.motion) .more { position: absolute; left: 0; bottom: 0; }
+	:global(html.motion) .device-wrap { display: grid; }
+	:global(html.motion) .progress { display: block; }
+
+	@media (max-width: 760px) {
+		:global(html.motion) .grid { grid-template-columns: 1fr; grid-template-rows: auto minmax(0, 1fr); gap: 10px; }
+		:global(html.motion) .info { min-height: 210px; }
+		:global(html.motion) .proj { justify-content: flex-start; padding-top: 12px; }
+		.proj h3 { font-size: 40px; margin: 8px 0 6px; }
+		.desc { font-size: 14px; }
+		.techs { margin-top: 6px; }
+		.links { margin-top: 10px; }
+	}
+</style>
