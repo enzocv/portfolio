@@ -1,39 +1,107 @@
 ---
+import Scene from './Scene.astro';
 import experience from '../data/experience.json';
+import { toGitLog, type Job } from '../features/experience/domain/gitLog';
+
+const commits = toGitLog(experience as Job[]);
+const length = `${120 + commits.length * 18}vh`;
 ---
-<section class="py-xl bg-surface-container-low/30 px-gutter" id="experience">
-    <div class="max-w-4xl mx-auto">
-      <h2 class="font-space text-3xl text-primary mb-xl text-center font-semibold">Experiencia Profesional</h2>
-      <div class="space-y-12 relative before:absolute before:left-0 md:before:left-1/2 before:h-full before:w-[2px] before:bg-outline-variant/30">
-        {experience.map((job, index) => (
-          index % 2 === 0 ? (
-            <div class="relative pl-8 md:pl-0 md:flex md:justify-between items-center group">
-              <div class="hidden md:block w-[45%]"></div>
-              <div class="absolute left-[-5px] md:left-1/2 md:translate-x-[-50%] w-3 h-3 bg-primary rounded-full group-hover:scale-150 transition-transform shadow-[0_0_10px_#00daf3]"></div>
-              <div class="md:w-[45%] glass p-md rounded-xl glass-hover transition-all">
-                <span class="text-xs font-space text-secondary mb-2 block">{job.period}</span>
-                <h3 class="font-bold text-lg">{job.role}</h3>
-                <p class="text-primary mb-4 text-sm font-medium">{job.company}</p>
-                <ul class="text-sm text-on-surface-variant space-y-2 list-disc list-inside">
-                  {job.highlights.map((highlight) => <li>{highlight}</li>)}
-                </ul>
-              </div>
-            </div>
-          ) : (
-            <div class="relative pl-8 md:pl-0 md:flex md:justify-between items-center group">
-              <div class="md:w-[45%] glass p-md rounded-xl glass-hover transition-all text-right order-1 md:order-none">
-                <span class="text-xs font-space text-secondary mb-2 block">{job.period}</span>
-                <h3 class="font-bold text-lg">{job.role}</h3>
-                <p class="text-primary mb-4 text-sm font-medium">{job.company}</p>
-                <ul class="text-sm text-on-surface-variant space-y-2 list-disc list-inside text-left md:text-right md:list-none">
-                  {job.highlights.map((highlight) => <li>{highlight}</li>)}
-                </ul>
-              </div>
-              <div class="absolute left-[-5px] md:left-1/2 md:translate-x-[-50%] w-3 h-3 bg-secondary rounded-full group-hover:scale-150 transition-transform shadow-[0_0_10px_#c0c1ff]"></div>
-              <div class="hidden md:block w-[45%]"></div>
-            </div>
-          )
-        ))}
-      </div>
-    </div>
-  </section>
+
+<Scene name="gitlog" anchor="experience" label="Experiencia profesional" length={length}>
+	<div class="gitlog">
+		<div class="wrap">
+			<h2 class="eyebrow">Experiencia profesional</h2>
+			<p class="cmd" aria-hidden="true"><b>$</b> git log --reverse --oneline enzo/carrera</p>
+			<div class="body" data-git-body>
+				<svg class="graph" data-git-svg aria-hidden="true"><path class="git-main" data-git-main></path></svg>
+				<ol class="rows">
+					{commits.map((c) => (
+						<li class:list={['row', { 'is-on': true, 'is-head': c.isHead }]} data-git-row data-lane={c.lane}>
+							<span class="hash" aria-hidden="true">{c.hash}</span>
+							<span class="date">{c.date}</span>
+							<span class="msg">
+								{c.message}
+								<span class="head-tag" aria-hidden="true">HEAD</span>
+								{c.detail && <small>{c.detail}</small>}
+							</span>
+						</li>
+					))}
+				</ol>
+			</div>
+		</div>
+	</div>
+</Scene>
+
+<script>
+	import { mountScenes } from '../features/scroll';
+	import { GitLogScene } from '../features/scroll/scenes/GitLogScene';
+
+	mountScenes('gitlog', (root) => new GitLogScene(root));
+</script>
+
+<style>
+	.gitlog {
+		height: 100%;
+		min-height: 100svh;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		padding-block: calc(var(--nav-h) + 8px) 24px;
+		background: #0a0f14;
+	}
+	.gitlog .wrap { width: 100%; }
+	.cmd { margin: 8px 0 22px; font-family: var(--font-mono); font-size: 14px; color: var(--color-muted); }
+	.cmd b { color: var(--color-accent); font-weight: 500; }
+	.body { position: relative; padding-left: 74px; }
+	.graph { position: absolute; left: 0; top: 0; width: 70px; height: 100%; overflow: visible; }
+	.graph :global(path) { fill: none; stroke-width: 2.5; stroke-linecap: round; }
+	.graph :global(.git-main) { stroke: var(--color-accent); }
+	.graph :global(.git-branch) { stroke: var(--color-warm); }
+	.graph :global(.git-dot) { fill: #0a0f14; stroke-width: 2.5; transition: fill 0.25s, opacity 0.25s; }
+	.graph :global(.git-dot.lane-0) { stroke: var(--color-accent); }
+	.graph :global(.git-dot.lane-1) { stroke: var(--color-warm); }
+	.graph :global(.git-dot.lane-0.is-on) { fill: var(--color-accent); }
+	.graph :global(.git-dot.lane-1.is-on) { fill: var(--color-warm); }
+	.graph :global(.git-dot.is-hidden) { opacity: 0; }
+
+	.rows { display: flex; flex-direction: column; gap: clamp(4px, 1.2vh, 12px); margin: 0; padding: 0; list-style: none; }
+	.row {
+		display: grid;
+		grid-template-columns: 8ch 10ch minmax(0, 1fr);
+		gap: 4px 16px;
+		align-items: baseline;
+		padding: 7px 12px;
+		border-radius: 10px;
+		transition: opacity 0.35s, transform 0.35s, background-color 0.35s;
+	}
+	.row:global(.is-head) { background: var(--color-ink-3); }
+	.hash { font-family: var(--font-mono); font-size: 13px; color: var(--color-warm); }
+	.date { font-family: var(--font-mono); font-size: 12px; color: var(--color-muted); }
+	.msg { min-width: 0; font-size: clamp(14px, 1.6vw, 16px); }
+	.msg small { display: block; font-size: 13px; color: var(--color-muted); }
+	.head-tag {
+		display: none;
+		margin-left: 8px;
+		padding: 1px 7px;
+		border-radius: 4px;
+		background: var(--color-accent);
+		color: #0a0f14;
+		font-family: var(--font-mono);
+		font-size: 11px;
+		font-weight: 500;
+		vertical-align: 2px;
+	}
+	.row:global(.is-head) .head-tag { display: inline-block; }
+
+	/* Modo animado: las filas se encienden cuando la línea las alcanza. */
+	:global(html.motion) .row { opacity: 0.2; transform: translateX(-10px); }
+	:global(html.motion) .row:global(.is-on) { opacity: 1; transform: none; }
+
+	@media (max-width: 760px) {
+		.body { padding-left: 56px; }
+		.graph { width: 54px; }
+		.row { grid-template-columns: auto 1fr; padding: 5px 8px; }
+		.msg { grid-column: 1 / -1; font-size: 14px; }
+		.msg small { display: none; }
+	}
+</style>

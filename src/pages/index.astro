@@ -2,7 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import Navbar from '../components/Navbar.astro';
 import Hero from '../components/Hero.astro';
-import Stats from '../components/Stats.astro';
+import About from '../components/About.astro';
 import TechStack from '../components/TechStack.astro';
 import Projects from '../components/Projects.astro';
 import Experience from '../components/Experience.astro';
@@ -11,11 +11,11 @@ import Contact from '../components/Contact.astro';
 import Footer from '../components/Footer.astro';
 ---
 
-<Layout title="Enzo Catalan | Full Stack Developer Portfolio">
+<Layout title="Enzo Catalán | Full Stack Developer">
 	<Navbar />
-	<main class="relative z-10">
+	<main>
 		<Hero />
-		<Stats />
+		<About />
 		<TechStack />
 		<Projects />
 		<Experience />
@@ -24,19 +24,3 @@ import Footer from '../components/Footer.astro';
 	</main>
 	<Footer />
 </Layout>
-
-<script>
-	const observer = new IntersectionObserver((entries) => {
-		entries.forEach(entry => {
-			if (entry.isIntersecting) {
-				entry.target.classList.add('animate-reveal');
-				observer.unobserve(entry.target);
-			}
-		});
-	}, { threshold: 0.1 });
-
-	document.querySelectorAll('section').forEach(section => {
-		section.classList.add('opacity-0');
-		observer.observe(section);
-	});
-</script>

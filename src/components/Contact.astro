@@ -1,57 +1,128 @@
 ---
+import Scene from './Scene.astro';
 import SocialIcon from './SocialIcon.astro';
 import { SOCIAL_LINKS } from '../data/social';
----
-<section class="py-xl px-gutter max-w-3xl mx-auto" id="contact">
-    <div class="glass p-lg md:p-xl rounded-2xl relative overflow-hidden">
-      <div class="absolute -top-24 -right-24 w-64 h-64 bg-primary/10 blur-3xl rounded-full"></div>
-      <div class="relative z-10">
-        <h2 class="font-space text-3xl text-primary mb-2 text-center font-semibold">¿Tienes un proyecto en mente?</h2>
-        <p class="text-on-surface-variant text-center mb-xl">Hablemos sobre cómo puedo ayudarte a construir algo increíble.</p>
-        <form id="contact-form" class="space-y-6">
-          <div class="grid md:grid-cols-2 gap-md">
-            <div>
-              <label for="contact-name" class="block text-sm font-medium mb-2 text-on-surface-variant">Nombre</label>
-              <input id="contact-name" name="name" required class="w-full bg-surface-container-lowest border border-outline-variant rounded-lg p-3 text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all" type="text"/>
-            </div>
-            <div>
-              <label for="contact-email" class="block text-sm font-medium mb-2 text-on-surface-variant">Email</label>
-              <input id="contact-email" name="email" required class="w-full bg-surface-container-lowest border border-outline-variant rounded-lg p-3 text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all" type="email"/>
-            </div>
-          </div>
-          <div>
-            <label for="contact-message" class="block text-sm font-medium mb-2 text-on-surface-variant">Mensaje</label>
-            <textarea id="contact-message" name="message" required class="w-full bg-surface-container-lowest border border-outline-variant rounded-lg p-3 text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all" rows="4"></textarea>
-          </div>
-          <button type="submit" class="w-full bg-primary text-background font-bold py-4 rounded-xl hover:opacity-90 transition-all shadow-[0_0_20px_rgba(0,218,243,0.2)] inline-flex items-center justify-center gap-2">
-            Enviar Mensaje <span class="material-symbols-outlined">send</span>
-          </button>
-        </form>
-        <div class="mt-xl flex justify-center gap-lg flex-wrap">
-          <a class="text-on-surface-variant hover:text-primary transition-colors flex items-center gap-2" href={SOCIAL_LINKS.github} target="_blank" rel="noopener noreferrer">
-            <SocialIcon name="github" class="w-5 h-5" /> GitHub
-          </a>
-          <a class="text-on-surface-variant hover:text-primary transition-colors flex items-center gap-2" href={SOCIAL_LINKS.linkedin} target="_blank" rel="noopener noreferrer">
-            <SocialIcon name="linkedin" class="w-5 h-5" /> LinkedIn
-          </a>
-          <a class="text-on-surface-variant hover:text-primary transition-colors flex items-center gap-2" href={`mailto:${SOCIAL_LINKS.email}`}>
-            <SocialIcon name="mail" class="w-5 h-5" /> Email
-          </a>
-        </div>
-      </div>
-    </div>
-  </section>
+import { CONTACT_REQUEST, CONTACT_RESPONSE } from '../data/scripts';
+import { renderTyped, typedLength } from '../features/scroll/shared/typewriter';
 
-<script define:vars={{ contactEmail: SOCIAL_LINKS.email }}>
-  const form = document.getElementById('contact-form');
-  form?.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const data = new FormData(form);
-    const name = data.get('name');
-    const email = data.get('email');
-    const message = data.get('message');
-    const subject = encodeURIComponent(`Nuevo mensaje de ${name} desde el portfolio`);
-    const body = encodeURIComponent(`Nombre: ${name}\nEmail: ${email}\n\nMensaje:\n${message}`);
-    window.location.href = `mailto:${contactEmail}?subject=${subject}&body=${body}`;
-  });
+// En el servidor ambos paneles se renderizan completos (estado final / sin JS).
+const request = renderTyped(CONTACT_REQUEST, typedLength(CONTACT_REQUEST));
+const response = renderTyped(CONTACT_RESPONSE, typedLength(CONTACT_RESPONSE));
+const subject = encodeURIComponent('Proyecto desde tu portfolio');
+---
+
+<Scene name="request" anchor="contact" label="Contacto" length="240vh" anchorAt={1}>
+	<div class="http">
+		<div class="wrap">
+			<p class="eyebrow">Contacto</p>
+			<h2>¿Tienes un proyecto? Envíalo.</h2>
+			<div class="panes">
+				<div class="pane" aria-hidden="true">
+					<div class="pane-h"><span>request</span><span>POST</span></div>
+					<pre data-request-text set:html={request} />
+				</div>
+				<div class="pane response" data-request-response>
+					<div class="pane-h"><span>response</span><span class="status">201 Created</span></div>
+					<pre set:html={response} />
+					<div class="actions">
+						<a class="btn btn-solid" href={`mailto:${SOCIAL_LINKS.email}?subject=${subject}`}>
+							<SocialIcon name="mail" class="icon" /> Escribirme
+						</a>
+						<button class="btn btn-ghost" type="button" data-copy-email={SOCIAL_LINKS.email}>Copiar email</button>
+						<a class="btn btn-ghost" href={SOCIAL_LINKS.github} target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+							<SocialIcon name="github" class="icon" />
+						</a>
+						<a class="btn btn-ghost" href={SOCIAL_LINKS.linkedin} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+							<SocialIcon name="linkedin" class="icon" />
+						</a>
+					</div>
+					<p class="copied" role="status" aria-live="polite"></p>
+				</div>
+			</div>
+		</div>
+	</div>
+</Scene>
+
+<script>
+	import { mountScenes } from '../features/scroll';
+	import { RequestScene } from '../features/scroll/scenes/RequestScene';
+	import { CONTACT_REQUEST } from '../data/scripts';
+
+	mountScenes('request', (root) => new RequestScene(root, CONTACT_REQUEST));
+
+	document.querySelectorAll<HTMLButtonElement>('[data-copy-email]').forEach((button) => {
+		const status = button.closest('[data-request-response]')?.querySelector<HTMLElement>('.copied');
+		button.addEventListener('click', async () => {
+			const email = button.dataset.copyEmail ?? '';
+			try {
+				await navigator.clipboard.writeText(email);
+				if (status) status.textContent = 'Email copiado.';
+			} catch {
+				if (status) status.textContent = email;
+			}
+			setTimeout(() => status && (status.textContent = ''), 2500);
+		});
+	});
 </script>
+
+<style>
+	.http {
+		height: 100%;
+		min-height: 100svh;
+		display: flex;
+		align-items: center;
+		padding-block: calc(var(--nav-h) + 12px) 32px;
+		background: #090d12;
+	}
+	.http .wrap { width: 100%; }
+	h2 {
+		margin: 8px 0 24px;
+		font-family: var(--font-display);
+		font-weight: 780;
+		font-size: clamp(28px, 4.4vw, 52px);
+		line-height: 1;
+		font-variation-settings: "wdth" 85;
+	}
+	.panes { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 18px; align-items: start; }
+	.pane { min-width: 0; overflow: hidden; border: 1px solid var(--color-line); border-radius: 14px; background: #0f161f; }
+	.pane-h {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		padding: 10px 16px;
+		border-bottom: 1px solid var(--color-line);
+		font-family: var(--font-mono);
+		font-size: 12px;
+		color: var(--color-muted);
+	}
+	pre {
+		min-height: 15em;
+		margin: 0;
+		padding: 16px;
+		font-family: var(--font-mono);
+		font-size: clamp(11.5px, 1.35vw, 14px);
+		line-height: 1.7;
+		color: #cfd6df;
+		white-space: pre-wrap;
+		word-break: break-word;
+	}
+	pre :global(.key) { color: var(--color-warm); }
+	pre :global(.dim) { color: var(--color-muted); }
+	pre :global(.ok) { color: var(--color-ok); }
+	.status { display: inline-flex; align-items: center; gap: 6px; color: var(--color-ok); }
+	.status::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--color-ok); box-shadow: 0 0 12px var(--color-ok); }
+	.actions { display: flex; flex-wrap: wrap; gap: 8px; padding: 0 16px 16px; }
+	.actions .btn { padding: 9px 16px; font-size: 14px; }
+	.actions :global(.icon) { width: 18px; height: 18px; }
+	.copied { min-height: 1.4em; padding: 0 16px 12px; font-size: 13px; color: var(--color-ok); }
+
+	:global(html.motion) .response { opacity: 0; transform: translateY(24px); }
+
+	@media (max-width: 760px) {
+		.panes { grid-template-columns: 1fr; gap: 10px; }
+		pre { min-height: 0; padding: 10px 12px; font-size: 11px; line-height: 1.55; }
+		:global(html.motion) .panes > .pane:first-child pre { min-height: 13.5em; }
+		h2 { margin-bottom: 12px; font-size: 26px; }
+		.copied { padding-bottom: 6px; }
+	}
+</style>

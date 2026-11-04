@@ -1,49 +1,151 @@
 ---
-import { withBase } from '../utils/paths';
+import { Image } from 'astro:assets';
+import Scene from './Scene.astro';
+import perfil from '../assets/perfil.png';
+import { BOOT_SCRIPT } from '../data/scripts';
+import { renderTyped } from '../features/scroll/shared/typewriter';
+import { BOOT_MIN_CHARS } from '../features/scroll/scenes/BootScene';
+
+// Primer frame de la terminal renderizado en el servidor (sin parpadeo al cargar).
+const firstFrame = renderTyped(BOOT_SCRIPT, BOOT_MIN_CHARS);
 ---
-<section class="min-h-screen flex items-center px-gutter pt-24 max-w-7xl mx-auto">
-    <div class="grid md:grid-cols-2 gap-xl items-center w-full">
-      <div class="animate-reveal" style="animation-delay: 0.1s;">
-        <div class="flex items-center gap-2 mb-4">
-          <span class="relative flex h-2.5 w-2.5">
-            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
-            <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-primary"></span>
-          </span>
-          <span class="text-primary font-space tracking-widest text-sm">DISPONIBLE PARA PROYECTOS</span>
-        </div>
-        <h1 class="font-space text-4xl md:text-5xl font-bold text-primary mb-2">Enzo Catalán</h1>
-        <h2 class="font-space text-2xl text-secondary mb-6">Bachiller en Ingeniería de Sistemas | Full Stack Developer</h2>
-        <p class="text-lg text-on-surface-variant mb-8 leading-relaxed">
-          Construyo soluciones digitales escalables, modernas y eficientes con un enfoque en arquitectura robusta y experiencia de usuario excepcional.
-        </p>
-        <div class="flex flex-wrap gap-sm">
-          <a href="#work" class="bg-primary-container text-on-primary-container px-8 py-4 rounded-full font-bold inline-flex items-center gap-2 hover:opacity-90 transition-all shadow-[0_0_20px_rgba(0,229,255,0.3)]">
-            Ver proyectos <span class="material-symbols-outlined">arrow_forward</span>
-          </a>
-          <a href="#contact" class="border border-outline text-on-surface px-8 py-4 rounded-full font-bold hover:bg-surface-container-highest transition-all inline-flex items-center">
-            Contactarme
-          </a>
-        </div>
-      </div>
-      <div class="relative flex justify-center animate-reveal" style="animation-delay: 0.4s;">
-        <div class="relative scale-[0.65] sm:scale-90 md:scale-100 origin-center">
-          <div class="absolute -inset-4 bg-primary/20 blur-3xl rounded-full"></div>
-          <div class="absolute top-8 -right-10 w-48 h-48 bg-pink-500/30 blur-3xl rounded-full"></div>
-          <img alt="Enzo Catalán" class="w-80 h-auto object-contain relative z-10 fade-bottom" src={withBase('/Perfil.png')}/>
-          <div class="absolute -top-4 -right-4 z-20 glass px-4 py-2 rounded-lg font-space text-primary animate-float" style="animation-delay: -1s;">&lt;React /&gt;</div>
-          <div class="absolute bottom-24 -left-8 z-20 glass px-4 py-2 rounded-lg font-space text-secondary animate-float" style="animation-delay: -2s;">Node.js</div>
-          <div class="absolute top-1/4 -right-14 z-20 glass px-4 py-2 rounded-lg font-space text-primary animate-float" style="animation-delay: -2s;">AWS</div>
-          <div class="absolute top-12 -left-10 z-20 glass px-4 py-2 rounded-lg font-space text-secondary animate-float" style="animation-delay: -0.5s;">TypeScript</div>
-          <div class="absolute bottom-16 -right-6 z-20 glass px-4 py-2 rounded-lg font-space text-primary animate-float" style="animation-delay: -0.5s;">Docker</div>
-          <div class="absolute -bottom-4 left-1/4 z-20 glass px-4 py-2 rounded-lg font-space text-secondary animate-float" style="animation-delay: -1.5s;">NestJS</div>
-        </div>
-      </div>
-    </div>
-  </section>
+
+<Scene name="boot" anchor="top" label="Portada" length="300vh">
+	<div class="boot">
+		<div class="term" data-boot-term aria-hidden="true">
+			<div class="term-bar"><i></i><i></i><i></i><span>zsh · ~/enzo</span></div>
+			<pre class="term-body"><span data-boot-text set:html={firstFrame} /><span class="cursor"></span></pre>
+		</div>
+
+		<div class="hero" data-boot-hero>
+			<Image
+				src={perfil}
+				alt="Enzo Catalán"
+				class="photo"
+				widths={[420, 640, 900]}
+				sizes="(max-width: 760px) 80vw, 40vw"
+				format="webp"
+				loading="eager"
+				fetchpriority="high"
+			/>
+			<div class="hero-content wrap" data-boot-content>
+				<p class="eyebrow status"><span class="dot"></span>Tacna, Perú · Disponible para proyectos</p>
+				<h1 class="name" data-boot-name><span>Enzo</span><span>Catalán</span></h1>
+				<p class="role">Full Stack Developer. Construyo web, apps móviles y APIs con arquitectura limpia.</p>
+				<div class="ctas">
+					<a href="#work" class="btn btn-solid">Ver proyectos</a>
+					<a href="#contact" class="btn btn-ghost">Contactarme</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</Scene>
+
+<script>
+	import { mountScenes } from '../features/scroll';
+	import { BootScene } from '../features/scroll/scenes/BootScene';
+	import { BOOT_SCRIPT } from '../data/scripts';
+
+	mountScenes('boot', (root) => new BootScene(root, BOOT_SCRIPT));
+</script>
 
 <style>
-  .fade-bottom {
-    -webkit-mask-image: linear-gradient(to bottom, black 0%, black 80%, transparent 100%);
-    mask-image: linear-gradient(to bottom, black 0%, black 80%, transparent 100%);
-  }
+	.boot { position: relative; height: 100%; min-height: 100svh; background: #070b10; }
+
+	/* Terminal (solo existe en el modo animado). */
+	.term {
+		display: none;
+		position: absolute;
+		left: 50%;
+		top: 50%;
+		width: min(680px, calc(100% - 32px));
+		height: min(380px, 62%);
+		transform: translate(-50%, -50%);
+		background: #0e151d;
+		border: 1px solid var(--color-line);
+		border-radius: 14px;
+		overflow: hidden;
+		box-shadow: 0 30px 80px rgb(0 0 0 / 0.5);
+	}
+	.term-bar {
+		height: 38px;
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		padding: 0 14px;
+		border-bottom: 1px solid var(--color-line);
+		font-family: var(--font-mono);
+		font-size: 12px;
+		color: var(--color-muted);
+	}
+	.term-bar i { width: 11px; height: 11px; border-radius: 50%; background: var(--color-line); }
+	.term-bar span { margin-inline: auto; transform: translateX(-24px); }
+	.term-body {
+		margin: 0;
+		padding: 18px 20px;
+		font-family: var(--font-mono);
+		font-size: clamp(12px, 1.5vw, 14px);
+		line-height: 1.75;
+		color: #cfd6df;
+		white-space: pre-wrap;
+		word-break: break-word;
+	}
+	.term-body :global(.pr) { color: var(--color-accent); }
+	.term-body :global(.ok) { color: var(--color-ok); }
+	.term-body :global(.dim) { color: var(--color-muted); }
+	.term-body :global(.url) { color: var(--color-warm); }
+
+	/* Portada. */
+	.hero {
+		position: absolute;
+		inset: 0;
+		display: flex;
+		align-items: center;
+		background:
+			radial-gradient(60% 70% at 78% 30%, rgb(138 151 255 / 0.35), transparent 70%),
+			radial-gradient(50% 60% at 10% 90%, rgb(255 181 77 / 0.22), transparent 70%),
+			#0d131b;
+	}
+	.photo {
+		position: absolute;
+		right: max(2vw, var(--gutter-r));
+		bottom: 0;
+		height: min(88%, 900px);
+		width: auto;
+		max-width: none;
+		-webkit-mask-image: linear-gradient(to bottom, #000 70%, transparent 100%);
+		mask-image: linear-gradient(to bottom, #000 70%, transparent 100%);
+		pointer-events: none;
+		user-select: none;
+	}
+	.hero-content { position: relative; z-index: 1; width: 100%; padding-top: var(--nav-h); }
+	.status { display: flex; align-items: center; gap: 10px; color: #c9ceff; }
+	.dot { width: 8px; height: 8px; border-radius: 50%; background: var(--color-ok); box-shadow: 0 0 12px var(--color-ok); }
+	.name {
+		--wdth: 128;
+		display: flex;
+		flex-direction: column;
+		margin: 14px 0 18px;
+		font-family: var(--font-display);
+		font-weight: 850;
+		font-size: clamp(54px, 13vw, 200px);
+		line-height: 0.82;
+		letter-spacing: -0.015em;
+		font-variation-settings: "wdth" var(--wdth);
+	}
+	.name span:last-child { color: var(--color-warm); }
+	.role { max-width: 36ch; font-size: clamp(16px, 2vw, 22px); color: var(--color-soft); }
+	.ctas { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+
+	/* Modo animado: la terminal se ve y la portada empieza cerrada. */
+	:global(html.motion) .term { display: block; }
+	:global(html.motion) .hero { clip-path: inset(50% 50% 50% 50%); }
+	:global(html.motion) .hero-content { opacity: 0; }
+	:global(html.motion) .name { --wdth: 55; }
+
+	@media (max-width: 760px) {
+		.hero { align-items: flex-end; padding-bottom: 8svh; }
+		.photo { right: 50%; transform: translateX(50%); height: 74%; opacity: 0.55; }
+		.name { --wdth: 100; }
+	}
 </style>

@@ -1,14 +1,35 @@
 ---
 import { SOCIAL_LINKS } from '../data/social';
 import { withBase } from '../utils/paths';
+
+const year = new Date().getFullYear();
 ---
-<footer class="bg-surface-container-lowest border-t border-outline-variant/5 w-full py-xl px-margin">
-    <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-md">
-      <a href="#" class="font-space text-primary font-bold text-xl">EC</a>
-      <p class="text-sm text-on-surface-variant">© 2026 Enzo Catalan. Built with Precision.</p>
-      <div class="flex gap-md">
-        <a class="text-on-surface-variant hover:text-secondary transition-colors text-sm" href={withBase('/privacidad')}>Política de Privacidad</a>
-        <a class="text-on-surface-variant hover:text-secondary transition-colors text-sm" href={SOCIAL_LINKS.github} target="_blank" rel="noopener noreferrer">Código Fuente</a>
-      </div>
-    </div>
-  </footer>
+
+<footer class="footer">
+	<div class="wrap inner">
+		<a href={withBase('/')} class="logo">EC</a>
+		<p class="copy">© {year} Enzo Catalán · Hecho con Astro en Tacna, Perú.</p>
+		<nav class="links" aria-label="Enlaces del pie">
+			<a href={withBase('/privacidad')}>Política de Privacidad</a>
+			<a href={SOCIAL_LINKS.github} target="_blank" rel="noopener noreferrer">GitHub</a>
+			<a href={SOCIAL_LINKS.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn</a>
+		</nav>
+	</div>
+</footer>
+
+<style>
+	.footer { position: relative; z-index: 1; border-top: 1px solid var(--color-line); background: var(--color-ink); }
+	.inner {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		justify-content: space-between;
+		gap: 16px 28px;
+		padding-block: 32px calc(32px + env(safe-area-inset-bottom, 0px));
+	}
+	.logo { font-family: var(--font-display); font-size: 20px; font-weight: 850; color: var(--color-warm); text-decoration: none; }
+	.copy { margin: 0; font-size: 14px; color: var(--color-muted); }
+	.links { display: flex; flex-wrap: wrap; gap: 20px; }
+	.links a { font-size: 14px; color: var(--color-soft); text-decoration: none; }
+	.links a:hover { color: var(--color-fg); }
+</style>
