@@ -13,7 +13,7 @@
     "subject": "Desarrollador Full Stack"
   },
   "name": "Enzo Catalán Vargas",
-  "headline": "Desarrollador Full Stack · 6+ años | React · Angular · Node.js · NestJS",
+  "headline": "Desarrollador Full Stack · +6 años | React · Angular · Node.js · NestJS",
   "contact_lines": [
     [
       {
@@ -43,7 +43,7 @@
       }
     ]
   ],
-  "summary": "Desarrollador Full Stack con más de 6 años de experiencia en aplicaciones web y servicios backend con NestJS y React para banca, telecomunicaciones, salud y logística en Perú, Chile, Argentina, Colombia y España. Más de 3 años en NTT DATA en proyectos para Banco de Crédito del Perú, Santander, Telefónica de Argentina, WOM, Clínica Alemana y Correos Express: desarrollo frontend y full stack (microservicios y microfrontends) y soporte de plataforma (pipelines de Jenkins y corrección de 20 vulnerabilidades de seguridad). En KURAX doy soporte N3 a sistemas legacy, desarrollo nuevos proyectos y he integrado 3 proveedores externos. En proyectos propios desarrollo plataformas SaaS multi-tenant con Next.js, NestJS y Go, y un microservicio de facturación electrónica para SUNAT.",
+  "summary": "Desarrollador Full Stack con más de 6 años de experiencia en el desarrollo de aplicaciones web y servicios backend con NestJS y React para banca, telecomunicaciones, salud y logística en Perú, Chile, Argentina, Colombia y España. Más de 3 años en NTT DATA en proyectos para Banco de Crédito del Perú, Santander, Telefónica de Argentina, WOM, Clínica Alemana y Correos Express: desarrollo frontend y full stack (microservicios y microfrontends) y soporte de plataforma (pipelines de Jenkins y corrección de 20 vulnerabilidades de seguridad). En KURAX doy soporte a sistemas legacy, desarrollo nuevos proyectos y he integrado 3 proveedores externos. En proyectos propios desarrollo plataformas SaaS multi-tenant con Next.js, NestJS y Go, y un microservicio de facturación electrónica para SUNAT.",
   "experience": [
     {
       "role": "Desarrollador Full Stack",
@@ -53,7 +53,7 @@
       "intro": "Equipo de 15 personas.",
       "stack": "NestJS, React, Astro, Python, GitHub Actions",
       "bullets": [
-        "Brindo soporte N3 a los sistemas legacy de la empresa y resuelvo sus incidencias en producción.",
+        "Brindo soporte a los sistemas legacy de la empresa y resuelvo sus incidencias en producción.",
         "Desarrollo nuevos proyectos full stack con NestJS, React y Astro.",
         "Integré 3 proveedores externos en los sistemas de la empresa: Lotobola, Calimaco First y GR Autoservicios."
       ]
@@ -65,9 +65,9 @@
       "dates": "10/2026 – Actualidad",
       "stack": "React, TypeScript, Vite, TanStack Query, React Hook Form, Zod, Vitest, Playwright",
       "bullets": [
-        "Desarrollé el panel de gestión y la tienda pública del negocio: productos, categorías, inventario, leads y equipo de vendedores con tarjeta digital y código QR.",
+        "Desarrollo el panel de gestión y la tienda pública del negocio: productos, categorías, inventario, leads y equipo de vendedores con tarjeta digital y código QR.",
         "Implementé los roles de dueño, administrador y vendedor, y los reportes de ventas.",
-        "Configuré un cliente tipado desde el contrato OpenAPI de la API, tests unitarios y de integración (Vitest, Testing Library y MSW) y pruebas E2E con Playwright."
+        "Configuré un cliente tipado generado a partir del contrato OpenAPI de la API, pruebas unitarias y de integración (Vitest, Testing Library y MSW) y pruebas E2E con Playwright."
       ]
     },
     {
@@ -91,7 +91,7 @@
           "dates": "2024 – 2025",
           "area": "Frontend",
           "bullets": [
-            "Corregí bugs responsive de la nueva web de Correos Express, refactoricé componentes y lógica, e implementé el manejo y la validación de formularios."
+            "Corregí bugs de diseño responsive de la nueva web de Correos Express, refactoricé componentes y lógica, e implementé el manejo y la validación de formularios."
           ]
         },
         {
@@ -104,13 +104,13 @@
           ]
         },
         {
-          "client": "Banco de Crédito del Perú (BCP)",
+          "client": "Banco de Crédito del Perú, BCP",
           "dates": "2023",
           "area": "DevSecOps",
           "bullets": [
             "Di soporte N2 a los pipelines de Jenkins de las aplicaciones del banco.",
             "Revisé y optimicé la infraestructura y la herramienta Jenkins para mejorar la experiencia de usuario.",
-            "Corregí 20 vulnerabilidades de seguridad asociadas a librerías y código en componentes Java y Docker."
+            "Corregí 20 vulnerabilidades de seguridad asociadas a bibliotecas y código en componentes Java y Docker."
           ]
         },
         {
@@ -118,7 +118,7 @@
           "dates": "2023",
           "area": "Frontend",
           "bullets": [
-            "Desarrollé los flujos de creación de cuentas de usuario y de gestión de permisos sobre cuentas existentes, con tests de componentes funcionales."
+            "Desarrollé los flujos de creación de cuentas de usuario y de gestión de permisos sobre cuentas existentes, con pruebas de componentes funcionales."
           ]
         },
         {
@@ -148,9 +148,9 @@
       "dates": "02/2020 – 12/2021",
       "intro": "En paralelo a CoDev desde 05/2021.",
       "bullets": [
-        "Netgou (2021), Full Stack: desarrollé el Sistema Adulto Mayor para Compensar (Colombia).",
-        "Wuay (2021), Frontend: desarrollé el menú interactivo para comercios en Colombia y el backoffice de administración de comercios.",
-        "Dirección Regional de Salud (2020), Frontend: desarrollé los módulos de Metas y SIIA Gerencia."
+        "Netgou (2021) · Full Stack: desarrollé el Sistema Adulto Mayor para Compensar (Colombia).",
+        "Wuay (2021) · Frontend: desarrollé el menú interactivo para comercios en Colombia y el backoffice de administración de comercios.",
+        "Dirección Regional de Salud (2020) · Frontend: desarrollé los módulos de Metas y SIIA Gerencia."
       ]
     }
   ],
@@ -165,7 +165,7 @@
     },
     {
       "label": "Backend",
-      "items": "Node.js (NodeJS), NestJS (Nest.js), Express, APIs REST (RESTful), OpenAPI, microservicios, colas (BullMQ), webhooks, integraciones con proveedores externos"
+      "items": "Node.js (NodeJS), NestJS (Nest.js), Express, API REST (RESTful), OpenAPI, microservicios, colas (BullMQ), webhooks, integraciones con proveedores externos"
     },
     {
       "label": "Bases de datos",
@@ -181,14 +181,14 @@
     },
     {
       "label": "Prácticas",
-      "items": "Clean Architecture, arquitectura hexagonal, SOLID, Clean Code, multi-tenant, soporte N2/N3 en producción, monitoreo y análisis de logs"
+      "items": "Clean Architecture, arquitectura hexagonal, SOLID, Clean Code, arquitectura multi-tenant, soporte N2/N3 en producción, monitoreo y análisis de logs"
     }
   ],
   "projects": [
     {
-      "name": "Facturación Electrónica SUNAT",
+      "name": "Facturación electrónica SUNAT",
       "stack": "NestJS · Prisma · PostgreSQL · BullMQ · Redis · Prometheus · Grafana",
-      "text": "Microservicio multi-tenant que emite facturas, boletas y notas en UBL 2.1 firmado, las envía a SUNAT por SOAP y lee el CDR. Colas con reintentos, circuit breaker, outbox y webhooks firmados (HMAC); arquitectura hexagonal."
+      "text": "Microservicio multi-tenant que emite facturas, boletas y notas de crédito y débito firmadas en UBL 2.1, las envía a SUNAT por SOAP y lee el CDR. Colas con reintentos, circuit breaker, outbox y webhooks firmados (HMAC); arquitectura hexagonal."
     },
     {
       "name": "Víbora",
@@ -198,12 +198,12 @@
     {
       "name": "Podio",
       "stack": "Next.js 16 · React 19 · NestJS · Prisma · PostgreSQL · OpenAPI · GitHub Actions",
-      "text": "SaaS para academias y torneos de deportes de combate: inscripción, pesaje, llaves, combate en vivo y acta firmada, con sitio público por organización."
+      "text": "SaaS para academias y torneos de deportes de combate: inscripción, pesaje, llaves, seguimiento del combate en vivo y acta firmada, con sitio público por organización."
     },
     {
       "name": "BabyMind",
       "stack": "React Native · NestJS · PostgreSQL · Prisma · Redis · Kotlin Multiplatform",
-      "text": "App de crianza para Android con API en NestJS: hitos, sueño, ficha médica y asistente con IA generativa. Reescritura nativa con Kotlin y Compose Multiplatform (Android e iOS) con caché sin conexión cifrada."
+      "text": "App de crianza para Android con API en NestJS: hitos, sueño, ficha médica y asistente con IA generativa. Reescritura nativa con Kotlin y Compose Multiplatform (Android e iOS) con caché cifrada para uso sin conexión."
     },
     {
       "name": "Turismo Sin Fronteras",
