@@ -1,52 +1,62 @@
-import { socialImageOf, type FeaturedRepo, type Project, type ProjectRepository } from '../domain/Project';
+import {
+  inferKind,
+  socialImageOf,
+  type FeaturedRepo,
+  type Project,
+  type ProjectKind,
+  type ProjectRepository,
+} from '../domain/Project';
+import type { GitHubClient } from './GitHubClient';
 
 interface GitHubRepoResponse {
   name: string;
+  full_name: string;
   description: string | null;
   topics?: string[];
   language: string | null;
   homepage: string | null;
   html_url: string;
   private: boolean;
+  fork: boolean;
+  archived: boolean;
+  default_branch: string;
 }
 
 /** Lee los proyectos desde la API REST de GitHub (en build time). */
 export class GitHubProjectRepository implements ProjectRepository {
-  constructor(
-    private readonly token?: string,
-    private readonly fetchFn: typeof fetch = fetch,
-  ) {}
+  constructor(private readonly client: GitHubClient) {}
 
   async findByRef(ref: FeaturedRepo): Promise<Project> {
-    let res = await this.request(ref.repo, this.token);
-
-    // Token vencido o revocado: los repos públicos se pueden leer sin autenticación.
-    if (res.status === 401 && this.token) {
-      console.warn(`[projects] GH_REPOS_TOKEN rechazado (401) para ${ref.repo}; reintentando sin token. Renueva el secreto.`);
-      res = await this.request(ref.repo);
-    }
-    if (!res.ok) throw new Error(`GitHub API error for ${ref.repo}: ${res.status}`);
-
-    const data = (await res.json()) as GitHubRepoResponse;
-    const topics = data.topics?.length ? data.topics : [data.language].filter((t): t is string => Boolean(t));
-
-    return {
-      slug: data.name,
-      title: data.name,
-      kind: ref.kind,
-      description: data.description ?? '',
-      techs: topics,
-      language: data.language,
-      socialImage: data.private ? null : socialImageOf(ref.repo),
-      screenshot: ref.screenshot,
-      demoUrl: data.homepage || null,
-      codeUrl: data.private ? null : data.html_url,
-    };
+    const data = await this.client.json<GitHubRepoResponse>(`/repos/${ref.repo}`);
+    return { ...toProject(data, ref.kind), screenshot: ref.screenshot };
   }
 
-  private request(repo: string, token?: string): Promise<Response> {
-    const headers: Record<string, string> = { Accept: 'application/vnd.github+json' };
-    if (token) headers.Authorization = `Bearer ${token}`;
-    return this.fetchFn(`https://api.github.com/repos/${repo}`, { headers });
+  async listAccessible(): Promise<Project[]> {
+    if (!this.client.hasToken) return [];
+    // Con un token fine-grained, la lista incluye solo los repos que se le dieron.
+    const repos = await this.client.json<GitHubRepoResponse[]>(
+      '/user/repos?affiliation=owner&sort=pushed&direction=desc&per_page=100',
+    );
+    return repos
+      .filter((r) => !r.fork && !r.archived)
+      .map((r) => toProject(r, inferKind(r.name, r.description ?? '', r.topics ?? [], r.language)));
   }
+}
+
+function toProject(data: GitHubRepoResponse, kind: ProjectKind): Project {
+  const topics = data.topics?.length ? data.topics : [data.language].filter((t): t is string => Boolean(t));
+  return {
+    repo: data.full_name,
+    slug: data.name.toLowerCase(),
+    title: data.name,
+    kind,
+    description: data.description ?? '',
+    techs: topics,
+    language: data.language,
+    isPrivate: data.private,
+    defaultBranch: data.default_branch,
+    socialImage: data.private ? null : socialImageOf(data.full_name),
+    demoUrl: data.homepage || null,
+    codeUrl: data.private ? null : data.html_url,
+  };
 }

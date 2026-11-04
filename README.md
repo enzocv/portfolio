@@ -38,7 +38,8 @@ src/
 
 ## Contenido
 
-- Proyectos destacados: `src/data/projects.ts`. Se leen de la API de GitHub en el build con el secreto `GH_REPOS_TOKEN`. Si la API falla en local, se usan datos mínimos y aparece un aviso; en CI el build falla.
+- Proyectos: `src/data/projects.ts`. Primero van los repos de `FEATURED_REPOS` y después, automáticamente, los repos a los que tiene acceso el secreto `GH_REPOS_TOKEN` (sin forks, archivados ni repos sin descripción; máximo `maxProjects`). Para ocultar uno, agrégalo a `exclude`. Si la API falla en local se usan datos mínimos y aparece un aviso; en CI el build falla.
+- Imágenes de proyectos: en el build se busca en cada repo un logo o ícono (`app-icon`, `icon`, `logo`…) y una captura (la primera imagen del README o un archivo `screenshot`, `preview`, `cover`…). Se descargan con el token, se optimizan a WebP y se publican en `/projects/`, así funcionan aunque el repo sea privado. Para mostrar una captura, agrega por ejemplo `docs/screenshot.png` al repo.
 - Experiencia: `src/data/experience.json`. Un puesto con `"git": { "branch": "..." }` se dibuja como una rama con merge.
 - Stack, servicios y textos de las terminales: `src/data/stack.ts`, `src/data/services.ts` y `src/data/scripts.ts`.
 - CV: coloca `public/cv-enzo-catalan.pdf` para que funcione el botón del menú.
