@@ -21,7 +21,8 @@ export interface Project {
   readonly description: string;
   readonly techs: readonly string[];
   readonly language: string | null;
-  readonly socialImage: string;
+  /** Imagen social de GitHub; `null` si el repo es privado (GitHub no la publica). */
+  readonly socialImage: string | null;
   readonly screenshot?: string;
   readonly demoUrl: string | null;
   readonly codeUrl: string | null;

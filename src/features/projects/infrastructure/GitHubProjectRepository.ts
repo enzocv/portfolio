@@ -37,7 +37,7 @@ export class GitHubProjectRepository implements ProjectRepository {
       description: data.description ?? '',
       techs: topics,
       language: data.language,
-      socialImage: socialImageOf(ref.repo),
+      socialImage: data.private ? null : socialImageOf(ref.repo),
       screenshot: ref.screenshot,
       demoUrl: data.homepage || null,
       codeUrl: data.private ? null : data.html_url,

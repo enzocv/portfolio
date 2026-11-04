@@ -1,4 +1,4 @@
-import { socialImageOf, type FeaturedRepo, type Project, type ProjectRepository } from '../domain/Project';
+import { type FeaturedRepo, type Project, type ProjectRepository } from '../domain/Project';
 
 interface Options {
   /**
@@ -16,7 +16,7 @@ const placeholderOf = (ref: FeaturedRepo): Project => ({
   description: '',
   techs: [],
   language: null,
-  socialImage: socialImageOf(ref.repo),
+  socialImage: null,
   screenshot: ref.screenshot,
   demoUrl: null,
   codeUrl: null,

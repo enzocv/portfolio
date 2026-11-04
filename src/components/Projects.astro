@@ -57,19 +57,17 @@ const total = String(projects.length).padStart(2, '0');
 								const shot = screenOf(project.screenshot) ?? (project.kind === 'Web' ? project.socialImage : undefined);
 								return (
 									<div class:list={['mock', project.kind === 'Web' ? 'mock-web' : 'mock-app']}>
-										{shot ? (
-											<img src={shot} alt="" loading="lazy" decoding="async" />
-										) : (
-											<div class="app">
-												<span class="app-icon">{project.title.charAt(0).toUpperCase()}</span>
-												<strong>{project.title}</strong>
-												{project.description && <p>{project.description}</p>}
-												<div class="chips">
-													{(project.techs.length ? project.techs : [project.kind]).slice(0, 4).map((t) => <span>{t}</span>)}
-												</div>
-												<div class="app-cards"><i></i><i></i><i></i></div>
+										<div class="app">
+											<span class="app-icon">{project.title.charAt(0).toUpperCase()}</span>
+											<strong>{project.title}</strong>
+											{project.description && <p>{project.description}</p>}
+											<div class="chips">
+												{(project.techs.length ? project.techs : [project.kind]).slice(0, 4).map((t) => <span>{t}</span>)}
 											</div>
-										)}
+											<div class="app-cards"><i></i><i></i><i></i></div>
+										</div>
+										{/* La pantalla generada queda debajo por si la imagen no carga. */}
+										{shot && <img src={shot} alt="" loading="lazy" decoding="async" onerror="this.remove()" />}
 									</div>
 								);
 							})}
@@ -176,10 +174,11 @@ const total = String(projects.length).padStart(2, '0');
 	}
 	.screen { position: absolute; inset: 6px; overflow: hidden; border-radius: inherit; }
 	.strip { display: flex; height: 100%; }
-	.mock { flex: 1 1 0; min-width: 0; height: 100%; overflow: hidden; }
-	.mock img { width: 100%; height: 100%; object-fit: cover; display: block; }
-	.mock-web { background: #0d1117; padding-top: 34px; }
-	.mock-web img { object-fit: contain; }
+	.mock { position: relative; flex: 1 1 0; min-width: 0; height: 100%; overflow: hidden; }
+	.mock img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+	.mock-web { background: linear-gradient(170deg, #1c2340, #10151f 70%); padding-top: 34px; }
+	.mock-web img { top: 34px; height: calc(100% - 34px); object-fit: contain; background: #0d1117; }
+	.mock-web .app { padding-top: 24px; }
 	.mock-app { background: linear-gradient(170deg, #1c2340, #10151f 70%); }
 	.app { height: 100%; display: flex; flex-direction: column; gap: 10px; padding: 52px 18px 18px; color: var(--color-fg); }
 	.app-icon {
@@ -230,5 +229,7 @@ const total = String(projects.length).padStart(2, '0');
 		.desc { font-size: 14px; }
 		.techs { margin-top: 6px; }
 		.links { margin-top: 10px; }
+		/* En móvil no hay espacio fijo para el enlace: el pie ya enlaza a GitHub. */
+		:global(html.motion) .more { display: none; }
 	}
 </style>
