@@ -1,17 +1,20 @@
 ---
 import Scene from './Scene.astro';
 import { SOCIAL_LINKS } from '../data/social';
-import { FEATURED_REPOS } from '../data/projects';
-import { getFeaturedProjects } from '../features/projects/application/getFeaturedProjects';
-import { GitHubProjectRepository } from '../features/projects/infrastructure/GitHubProjectRepository';
+import { getShowcase, mediaPath } from '../features/projects';
 import { withBase } from '../utils/paths';
 
-const token = import.meta.env.GH_REPOS_TOKEN as string | undefined;
-const projects = await getFeaturedProjects(new GitHubProjectRepository(token), FEATURED_REPOS, {
-	strict: Boolean(token) || process.env.CI === 'true',
-});
+const showcase = await getShowcase();
+const projects = showcase.map(({ project, media }) => ({
+	...project,
+	icon: media.icon ? withBase(mediaPath(project.slug, 'icon')) : null,
+	// Prioridad: captura configurada → captura del repo → imagen social (solo web y repos públicos).
+	shot:
+		(project.screenshot?.startsWith('/') ? withBase(project.screenshot) : project.screenshot) ??
+		(media.cover ? withBase(mediaPath(project.slug, 'cover')) : null) ??
+		(project.kind === 'Web' ? project.socialImage : null),
+}));
 
-const screenOf = (src?: string) => (src && src.startsWith('/') ? withBase(src) : src);
 // Cada proyecto ocupa ~1 pantalla de scroll, más una de entrada/salida.
 const length = `${100 + projects.length * 90}vh`;
 const total = String(projects.length).padStart(2, '0');
@@ -21,7 +24,10 @@ const total = String(projects.length).padStart(2, '0');
 	<div class="rail">
 		<div class="head">
 			<p class="eyebrow">Proyectos destacados</p>
-			<span class="count" aria-hidden="true"><b data-rail-counter>01</b> / {total}</span>
+			<div class="head-right">
+				<a class="more" href={SOCIAL_LINKS.github} target="_blank" rel="noopener noreferrer">Ver más en GitHub ↗</a>
+				<span class="count" aria-hidden="true"><b data-rail-counter>01</b> / {total}</span>
+			</div>
 		</div>
 
 		<div class="grid">
@@ -32,7 +38,10 @@ const total = String(projects.length).padStart(2, '0');
 						data-rail-item
 						data-kind={project.kind === 'Web' ? 'browser' : 'phone'}
 					>
-						<span class="tag">{project.kind}</span>
+						<div class="proj-top">
+							{project.icon && <img class="proj-icon" src={project.icon} alt="" width="40" height="40" loading="lazy" decoding="async" />}
+							<span class="tag">{project.kind}</span>
+						</div>
 						<h3>{project.title}</h3>
 						{project.description && <p class="desc">{project.description}</p>}
 						{project.techs.length > 0 && <p class="techs">{project.techs.map((t) => `#${t}`).join(' ')}</p>}
@@ -44,7 +53,6 @@ const total = String(projects.length).padStart(2, '0');
 						)}
 					</article>
 				))}
-				<a class="more" href={SOCIAL_LINKS.github} target="_blank" rel="noopener noreferrer">Ver más en GitHub ↗</a>
 			</div>
 
 			<div class="device-wrap" data-rail-wrap aria-hidden="true">
@@ -54,22 +62,24 @@ const total = String(projects.length).padStart(2, '0');
 					<div class="screen">
 						<div class="strip" data-rail-strip style={`width: ${projects.length * 100}%`}>
 							{projects.map((project) => {
-								const shot = screenOf(project.screenshot) ?? (project.kind === 'Web' ? project.socialImage : undefined);
+								const shot = project.shot;
 								return (
 									<div class:list={['mock', project.kind === 'Web' ? 'mock-web' : 'mock-app']}>
-										{shot ? (
-											<img src={shot} alt="" loading="lazy" decoding="async" />
-										) : (
-											<div class="app">
+										<div class="app">
+											{project.icon ? (
+												<img class="app-icon app-icon-img" src={project.icon} alt="" width="56" height="56" loading="lazy" decoding="async" />
+											) : (
 												<span class="app-icon">{project.title.charAt(0).toUpperCase()}</span>
-												<strong>{project.title}</strong>
-												{project.description && <p>{project.description}</p>}
-												<div class="chips">
-													{(project.techs.length ? project.techs : [project.kind]).slice(0, 4).map((t) => <span>{t}</span>)}
-												</div>
-												<div class="app-cards"><i></i><i></i><i></i></div>
+											)}
+											<strong>{project.title}</strong>
+											{project.description && <p>{project.description}</p>}
+											<div class="chips">
+												{(project.techs.length ? project.techs : [project.kind]).slice(0, 4).map((t) => <span>{t}</span>)}
 											</div>
-										)}
+											<div class="app-cards"><i></i><i></i><i></i></div>
+										</div>
+										{/* La pantalla generada queda debajo por si la imagen no carga. */}
+										{shot && <img class="shot" src={shot} alt="" loading="lazy" decoding="async" onerror="this.remove()" />}
 									</div>
 								);
 							})}
@@ -101,7 +111,7 @@ const total = String(projects.length).padStart(2, '0');
 	}
 	.head, .grid, .progress { width: 100%; max-width: 1120px; margin-inline: auto; }
 	.head { display: flex; justify-content: space-between; align-items: baseline; }
-	.count { font-family: var(--font-mono); font-size: 13px; color: var(--color-muted); font-variant-numeric: tabular-nums; }
+	.count { white-space: nowrap; font-family: var(--font-mono); font-size: 13px; color: var(--color-muted); font-variant-numeric: tabular-nums; }
 	.count b { color: var(--color-fg); font-weight: 500; }
 
 	.grid { display: grid; gap: 32px; }
@@ -118,20 +128,23 @@ const total = String(projects.length).padStart(2, '0');
 		color: var(--color-muted);
 	}
 	.proj { display: flex; flex-direction: column; }
+	.proj-top { display: flex; align-items: center; gap: 12px; }
+	.proj-icon { width: 40px; height: 40px; border-radius: 11px; object-fit: cover; }
 	.proj h3 {
 		margin: 12px 0;
 		font-family: var(--font-display);
 		font-weight: 820;
-		font-size: clamp(40px, 6vw, 84px);
+		font-size: clamp(38px, 5.2vw, 72px);
 		line-height: 0.95;
 		font-variation-settings: "wdth" 70;
-		overflow-wrap: anywhere;
+		overflow-wrap: break-word;
 	}
 	.desc { max-width: 40ch; color: var(--color-soft); }
 	.techs { margin-top: 14px; font-family: var(--font-mono); font-size: 12px; color: var(--color-muted); }
 	.links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
 	.links .btn { padding: 9px 18px; font-size: 14px; }
-	.more { align-self: start; color: var(--color-accent); font-size: 14px; text-underline-offset: 3px; }
+	.head-right { display: flex; align-items: baseline; gap: 18px; }
+	.more { color: var(--color-accent); font-size: 13px; text-underline-offset: 3px; }
 
 	/* El marco solo existe en el modo animado. */
 	.device-wrap { display: none; height: 100%; min-height: 0; place-items: center; min-width: 0; }
@@ -176,10 +189,11 @@ const total = String(projects.length).padStart(2, '0');
 	}
 	.screen { position: absolute; inset: 6px; overflow: hidden; border-radius: inherit; }
 	.strip { display: flex; height: 100%; }
-	.mock { flex: 1 1 0; min-width: 0; height: 100%; overflow: hidden; }
-	.mock img { width: 100%; height: 100%; object-fit: cover; display: block; }
-	.mock-web { background: #0d1117; padding-top: 34px; }
-	.mock-web img { object-fit: contain; }
+	.mock { position: relative; flex: 1 1 0; min-width: 0; height: 100%; overflow: hidden; }
+	.mock .shot { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+	.mock-web { background: linear-gradient(170deg, #1c2340, #10151f 70%); padding-top: 34px; }
+	.mock-web .shot { top: 34px; height: calc(100% - 34px); object-fit: contain; background: #0d1117; }
+	.mock-web .app { padding-top: 24px; }
 	.mock-app { background: linear-gradient(170deg, #1c2340, #10151f 70%); }
 	.app { height: 100%; display: flex; flex-direction: column; gap: 10px; padding: 52px 18px 18px; color: var(--color-fg); }
 	.app-icon {
@@ -194,6 +208,7 @@ const total = String(projects.length).padStart(2, '0');
 		font-size: 28px;
 		font-weight: 850;
 	}
+	.app-icon-img { object-fit: cover; }
 	.app strong { font-family: var(--font-display); font-size: 24px; font-weight: 800; line-height: 1.05; overflow-wrap: anywhere; }
 	.app p { font-size: 13px; line-height: 1.45; color: var(--color-soft); display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
 	.chips { display: flex; flex-wrap: wrap; gap: 6px; }
@@ -210,7 +225,7 @@ const total = String(projects.length).padStart(2, '0');
 	:global(html.motion) .info { position: relative; display: block; min-height: 300px; padding: 0; }
 	:global(html.motion) .proj {
 		position: absolute;
-		inset: 0 0 32px;
+		inset: 0;
 		justify-content: center;
 		opacity: 0;
 		transform: translateY(24px);
@@ -218,7 +233,6 @@ const total = String(projects.length).padStart(2, '0');
 		transition: opacity 0.45s, transform 0.45s;
 	}
 	:global(html.motion) .proj:global(.is-active) { opacity: 1; transform: none; pointer-events: auto; }
-	:global(html.motion) .more { position: absolute; left: 0; bottom: 0; }
 	:global(html.motion) .device-wrap { display: grid; }
 	:global(html.motion) .progress { display: block; }
 
@@ -230,5 +244,6 @@ const total = String(projects.length).padStart(2, '0');
 		.desc { font-size: 14px; }
 		.techs { margin-top: 6px; }
 		.links { margin-top: 10px; }
+		.more { display: none; }
 	}
 </style>

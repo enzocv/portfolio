@@ -1,0 +1,222 @@
+{
+  "lang": "en-US",
+  "file": "cv-enzo-catalan-en",
+  "labels": {
+    "summary": "Summary",
+    "experience": "Professional Experience",
+    "skills": "Technical Skills",
+    "projects": "Personal Projects",
+    "education": "Education",
+    "languages": "Languages",
+    "client": "Client",
+    "stack": "Stack",
+    "subject": "Full Stack Developer"
+  },
+  "name": "Enzo Catalán Vargas",
+  "headline": "Full Stack Developer · 6+ years | React · Angular · Node.js · NestJS",
+  "contact_lines": [
+    [
+      {
+        "text": "Tacna, Peru"
+      },
+      {
+        "text": "+51 926 051 158",
+        "href": "tel:+51926051158"
+      },
+      {
+        "text": "enzocv96@gmail.com",
+        "href": "mailto:enzocv96@gmail.com"
+      }
+    ],
+    [
+      {
+        "text": "linkedin.com/in/enzocatalan",
+        "href": "https://www.linkedin.com/in/enzocatalan/"
+      },
+      {
+        "text": "github.com/enzocv",
+        "href": "https://github.com/enzocv"
+      },
+      {
+        "text": "enzocv.github.io/portfolio",
+        "href": "https://enzocv.github.io/portfolio"
+      }
+    ]
+  ],
+  "summary": "Full Stack Developer with 6+ years of experience building web applications and backend services with NestJS and React for banking, telecommunications, healthcare and logistics clients in Peru, Chile, Argentina, Colombia and Spain. 3+ years at NTT DATA on projects for Banco de Crédito del Perú, Santander, Telefónica de Argentina, WOM, Clínica Alemana and Correos Express: frontend and full stack development (microservices and micro-frontends) and platform support (Jenkins pipelines and remediation of 20 security vulnerabilities). At KURAX I provide L3 support for legacy systems, build new projects and have integrated 3 external providers. In personal projects I build multi-tenant SaaS platforms with Next.js, NestJS and Go, and an e-invoicing microservice for SUNAT, Peru's tax authority.",
+  "experience": [
+    {
+      "role": "Full Stack Developer",
+      "company": "KURAX",
+      "location": "Tacna, Peru (on-site)",
+      "dates": "08/2025 – Present",
+      "intro": "15-person team.",
+      "stack": "NestJS, React, Astro, Python, GitHub Actions",
+      "bullets": [
+        "Provide L3 support for the company's legacy systems and resolve production incidents.",
+        "Build new full stack projects with NestJS, React and Astro.",
+        "Integrated 3 external providers into the company's systems: Lotobola, Calimaco First and GR Autoservicios."
+      ]
+    },
+    {
+      "role": "Freelance Full Stack Developer",
+      "company": "JEP Importaciones",
+      "location": "Remote",
+      "dates": "10/2026 – Present",
+      "stack": "React, TypeScript, Vite, TanStack Query, React Hook Form, Zod, Vitest, Playwright",
+      "bullets": [
+        "Built the management dashboard and the public online store: products, categories, inventory, leads and a sales team with digital business cards and QR codes.",
+        "Implemented owner, administrator and salesperson roles, plus sales reports.",
+        "Set up a typed client generated from the API's OpenAPI contract, unit and integration tests (Vitest, Testing Library and MSW) and end-to-end tests with Playwright."
+      ]
+    },
+    {
+      "role": "Software Developer",
+      "company": "NTT DATA",
+      "location": "",
+      "dates": "05/2022 – 08/2025",
+      "intro": "Global IT consulting company. Assigned to 6 client projects in banking, telecommunications, healthcare and logistics.",
+      "stack": "NestJS, React",
+      "projects": [
+        {
+          "client": "Santander",
+          "dates": "2025",
+          "area": "Frontend / DevOps",
+          "bullets": [
+            "Reviewed and adapted component deployment pipelines for a new platform."
+          ]
+        },
+        {
+          "client": "Correos Express, Spain",
+          "dates": "2024 – 2025",
+          "area": "Frontend",
+          "bullets": [
+            "Fixed responsive bugs on the new Correos Express website, refactored components and logic, and implemented form handling and validation."
+          ]
+        },
+        {
+          "client": "Clínica Alemana, Chile",
+          "dates": "2024",
+          "area": "Full Stack",
+          "bullets": [
+            "Developed microservices and the micro-frontend for the new hospital bed request module.",
+            "Reviewed and modified database stored procedures."
+          ]
+        },
+        {
+          "client": "Banco de Crédito del Perú (BCP)",
+          "dates": "2023",
+          "area": "DevSecOps",
+          "bullets": [
+            "Provided L2 support for the bank's Jenkins pipelines.",
+            "Reviewed and optimized the Jenkins infrastructure and tooling to improve the user experience.",
+            "Fixed 20 security vulnerabilities in libraries and code across Java and Docker components."
+          ]
+        },
+        {
+          "client": "WOM, Chile",
+          "dates": "2023",
+          "area": "Frontend",
+          "bullets": [
+            "Developed user account creation and permission management flows for existing accounts, with functional component tests."
+          ]
+        },
+        {
+          "client": "Telefónica de Argentina",
+          "dates": "2022",
+          "area": "Full Stack · L2/L3 Support",
+          "bullets": [
+            "Provided L2/L3 production support: monitored microservices, analyzed web and backend error logs, and resolved incidents in both layers."
+          ]
+        }
+      ]
+    },
+    {
+      "role": "Full Stack Developer",
+      "company": "CoDev | Agencia Digital",
+      "location": "Remote (Colombia)",
+      "dates": "05/2021 – 04/2022",
+      "bullets": [
+        "Backend: developed the Cristal System for Compensar, a Colombian family welfare fund.",
+        "Frontend: developed the back office for evaluating entrepreneurs, and designed and integrated the website for collecting entrepreneurs' data."
+      ]
+    },
+    {
+      "role": "Freelance Developer",
+      "company": "Self-employed",
+      "location": "Remote",
+      "dates": "02/2020 – 12/2021",
+      "intro": "Concurrent with CoDev from 05/2021.",
+      "bullets": [
+        "Netgou (2021), Full Stack: developed the Senior Citizens System for Compensar (Colombia).",
+        "Wuay (2021), Frontend: developed the interactive menu for businesses in Colombia and the back office for managing them.",
+        "Regional Health Directorate (2020), Frontend: developed the Goals and SIIA Management modules."
+      ]
+    }
+  ],
+  "skills": [
+    {
+      "label": "Languages",
+      "items": "TypeScript, JavaScript, SQL, Python, Go, Kotlin, HTML5, CSS3"
+    },
+    {
+      "label": "Frontend",
+      "items": "React (React.js), Next.js, Angular, AngularJS, React Native, Astro, Tailwind CSS, TanStack Query, micro-frontends, responsive design"
+    },
+    {
+      "label": "Backend",
+      "items": "Node.js (NodeJS), NestJS (Nest.js), Express, REST APIs (RESTful), OpenAPI, microservices, queues (BullMQ), webhooks, third-party integrations"
+    },
+    {
+      "label": "Databases",
+      "items": "PostgreSQL, MySQL, MongoDB, Redis, Firebase, Prisma, stored procedures"
+    },
+    {
+      "label": "DevOps",
+      "items": "GitHub Actions, Jenkins, CI/CD, Docker, Git, Prometheus, Grafana, vulnerability remediation"
+    },
+    {
+      "label": "Testing",
+      "items": "Vitest, Testing Library, Playwright (E2E), component testing"
+    },
+    {
+      "label": "Practices",
+      "items": "Clean Architecture, hexagonal architecture, SOLID, Clean Code, multi-tenancy, L2/L3 production support, monitoring and log analysis"
+    }
+  ],
+  "projects": [
+    {
+      "name": "SUNAT E-Invoicing",
+      "stack": "NestJS · Prisma · PostgreSQL · BullMQ · Redis · Prometheus · Grafana",
+      "text": "Multi-tenant microservice that issues invoices, receipts and credit/debit notes as signed UBL 2.1 documents, submits them to SUNAT over SOAP and reads the CDR response. Queues with retries, circuit breaker, outbox and signed webhooks (HMAC); hexagonal architecture."
+    },
+    {
+      "name": "Víbora",
+      "stack": "Go · PostgreSQL · sqlc · Next.js 16 · React 19 · OpenAPI · Playwright",
+      "text": "Multi-tenant booking SaaS for padel, tennis and pickleball clubs in Chile: branded booking site for each club, payments with signed webhooks, email outbox and admin dashboard. Clean Architecture enforced with golangci-lint."
+    },
+    {
+      "name": "Podio",
+      "stack": "Next.js 16 · React 19 · NestJS · Prisma · PostgreSQL · OpenAPI · GitHub Actions",
+      "text": "SaaS for combat sports academies and tournaments: registration, weigh-ins, brackets, live scoring and signed match reports, with a public site for each organization."
+    },
+    {
+      "name": "BabyMind",
+      "stack": "React Native · NestJS · PostgreSQL · Prisma · Redis · Kotlin Multiplatform",
+      "text": "Parenting app for Android with a NestJS API: milestones, sleep, medical records and a generative AI assistant. Native rewrite with Kotlin and Compose Multiplatform (Android and iOS) with an encrypted offline cache."
+    },
+    {
+      "name": "Turismo Sin Fronteras",
+      "stack": "React 19 · TypeScript · Vite · Tailwind CSS · TanStack Query · Zustand · Gemini",
+      "text": "Travel agency website: tour catalog, English/Spanish i18n, currency conversion and WhatsApp bookings."
+    }
+  ],
+  "education": [
+    {
+      "degree": "Bachelor's Degree in Systems Engineering",
+      "school": "Universidad Privada de Tacna",
+      "dates": "2019"
+    }
+  ],
+  "languages": "Spanish (native) · English (basic)"
+}

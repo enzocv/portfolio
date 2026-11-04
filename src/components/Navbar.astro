@@ -1,5 +1,5 @@
 ---
-import { RESUME_PATH } from '../data/social';
+import { RESUMES } from '../data/social';
 
 const navLinks = [
 	{ href: '#about', label: 'Sobre mí' },
@@ -19,10 +19,13 @@ const navLinks = [
 			{navLinks.map((link) => <a href={link.href}>{link.label}</a>)}
 		</nav>
 
-		<a href={RESUME_PATH} download class="cv">
+		<div class="cv" role="group" aria-label="Descargar CV">
 			<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11m0 0-4-4m4 4 4-4M5 19h14" /></svg>
-			CV
-		</a>
+			<span>CV</span>
+			{RESUMES.map((cv) => (
+				<a href={cv.href} download={cv.file} aria-label={cv.label} lang={cv.lang.toLowerCase()}>{cv.lang}</a>
+			))}
+		</div>
 
 		<button class="toggle" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="mobile-menu" data-menu-toggle>
 			<span></span><span></span>
@@ -34,7 +37,11 @@ const navLinks = [
 			<nav aria-label="Secciones">
 				{navLinks.map((link) => <a href={link.href}>{link.label}</a>)}
 			</nav>
-			<a href={RESUME_PATH} download class="btn btn-solid">Descargar CV</a>
+			<div class="menu-cv">
+				{RESUMES.map((cv, i) => (
+					<a href={cv.href} download={cv.file} lang={cv.lang.toLowerCase()} class:list={['btn', i === 0 ? 'btn-solid' : 'btn-ghost']}>{cv.label}</a>
+				))}
+			</div>
 		</div>
 	</div>
 </header>
@@ -98,7 +105,7 @@ const navLinks = [
 		display: inline-flex;
 		align-items: center;
 		gap: 6px;
-		padding: 7px 14px;
+		padding: 4px 6px 4px 12px;
 		border: 1px solid var(--color-line);
 		border-radius: 999px;
 		color: var(--color-fg);
@@ -107,7 +114,10 @@ const navLinks = [
 		text-decoration: none;
 		transition: border-color 0.2s, background-color 0.2s;
 	}
-	.cv:hover { border-color: var(--color-warm); background: var(--color-ink-3); }
+	.cv:hover, .cv:focus-within { border-color: var(--color-warm); }
+	.cv span { margin-right: 2px; color: var(--color-muted); }
+	.cv a { padding: 3px 8px; border-radius: 999px; color: var(--color-fg); text-decoration: none; transition: background-color 0.2s, color 0.2s; }
+	.cv a:hover { background: var(--color-warm); color: var(--color-ink); }
 	.cv svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 
 	.toggle {
@@ -132,7 +142,8 @@ const navLinks = [
 	.menu-inner { min-height: 0; overflow: hidden; padding-left: var(--gutter-l); padding-right: var(--gutter-r); }
 	.menu nav { display: flex; flex-direction: column; border-top: 1px solid var(--color-line); }
 	.menu nav a { padding: 12px 0; border-bottom: 1px solid color-mix(in srgb, var(--color-line) 50%, transparent); }
-	.menu .btn { justify-content: center; width: 100%; margin: 14px 0 16px; }
+	.menu-cv { display: grid; gap: 8px; margin: 14px 0 16px; }
+	.menu .btn { justify-content: center; width: 100%; }
 
 	@media (min-width: 900px) {
 		.menu { display: none; }
